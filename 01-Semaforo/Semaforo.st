@@ -1,5 +1,75 @@
+!classDefinition: #OrquestadorDeSeñalesDeTransito category: #Semaforo!
+DenotativeObjectMorph subclass: #OrquestadorDeSeñalesDeTransito
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Semaforo'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'OrquestadorDeSeñalesDeTransito class' category: #Semaforo!
+OrquestadorDeSeñalesDeTransito class
+	instanceVariableNames: 'señalDeDetencion señalDePrecaucion señalDeAvance'!
+
+!OrquestadorDeSeñalesDeTransito class methodsFor: 'setters' stamp: 'J.S 3/31/2019 18:02:44'!
+señalDeAvance: unaSeñalDeAvance
+	
+	señalDeAvance := unaSeñalDeAvance.! !
+
+!OrquestadorDeSeñalesDeTransito class methodsFor: 'setters' stamp: 'J.S 3/31/2019 18:02:01'!
+señalDeDetencion: unaSeñalDeDetencion
+	
+	señalDeDetencion := unaSeñalDeDetencion.! !
+
+!OrquestadorDeSeñalesDeTransito class methodsFor: 'setters' stamp: 'J.S 3/31/2019 18:02:29'!
+señalDePrecaucion: unaSeñalDePrecaucion
+	
+	señalDePrecaucion := unaSeñalDePrecaucion.! !
+
+
+!OrquestadorDeSeñalesDeTransito class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 18:05:28'!
+activarFlujoDeAvance
+	señalDePrecaucion prender.
+	(Delay forSeconds: 1) wait.
+	señalDeDetencion apagar.
+	señalDePrecaucion apagar.
+	señalDeAvance prender.! !
+
+!OrquestadorDeSeñalesDeTransito class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 19:04:07'!
+activarFlujoDeDetencion
+	señalDePrecaucion prender.
+	señalDeAvance apagar.
+	(Delay forSeconds: 1) wait.
+	señalDeDetencion prender.
+	señalDePrecaucion apagar.! !
+
+!OrquestadorDeSeñalesDeTransito class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 18:06:30'!
+apagarSeñales
+	señalDeDetencion apagar.
+	señalDePrecaucion apagar.
+	señalDeAvance apagar.! !
+
+!OrquestadorDeSeñalesDeTransito class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 18:07:49'!
+titilarSeñalDePrecaucion
+
+	señalDePrecaucion prender.
+	(Delay forSeconds: 1) wait.
+	señalDePrecaucion apagar.
+	(Delay forSeconds: 1) wait.! !
+
+
+!OrquestadorDeSeñalesDeTransito class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	morph := nil.
+	señalDeDetencion := nil.
+	señalDePrecaucion := nil.
+	señalDeAvance := nil.! !
+
+
 !classDefinition: #OrquestadorDeSeñalesDeTransitoDeCanning category: #Semaforo!
-DenotativeObjectMorph subclass: #OrquestadorDeSeñalesDeTransitoDeCanning
+OrquestadorDeSeñalesDeTransito subclass: #OrquestadorDeSeñalesDeTransitoDeCanning
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -11,55 +81,26 @@ DenotativeObjectMorph subclass: #OrquestadorDeSeñalesDeTransitoDeCanning
 OrquestadorDeSeñalesDeTransitoDeCanning class
 	instanceVariableNames: ''!
 
-!OrquestadorDeSeñalesDeTransitoDeCanning class methodsFor: 'morph' stamp: 'J.S 3/31/2019 14:17:56'!
-createMorph
-
-	^LayoutMorph newColumn
-		morphExtent: 60 @ 130;
-		yourself
-! !
-
-
-!OrquestadorDeSeñalesDeTransitoDeCanning class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:05:41'!
-activarFlujoDeAvance
-	SeñalDePrecaucionDeCanning prender.
-	(Delay forSeconds: 1) wait.
-	SeñalDeDetencionDeCanning apagar.
-	SeñalDePrecaucionDeCanning apagar.
-	SeñalDeAvanceDeCanning prender.! !
-
-!OrquestadorDeSeñalesDeTransitoDeCanning class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:05:36'!
-activarFlujoDeDetencion
-	SeñalDePrecaucionDeCanning prender.
-	(Delay forSeconds: 1) wait.
-	SeñalDeDetencionDeCanning prender.
-	SeñalDePrecaucionDeCanning apagar.
-	SeñalDeAvanceDeCanning apagar.! !
-
-!OrquestadorDeSeñalesDeTransitoDeCanning class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 15:54:19'!
-apagarSeñales
-	SeñalDeDetencionDeCanning apagar.
-	SeñalDePrecaucionDeCanning apagar.
-	SeñalDeAvanceDeCanning apagar.! !
-
-!OrquestadorDeSeñalesDeTransitoDeCanning class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:19:16'!
-titilarSeñalDePrecaucion
-
-	SeñalDePrecaucionDeCanning prender.
-	(Delay forSeconds: 1) wait.
-	SeñalDePrecaucionDeCanning apagar.
-	(Delay forSeconds: 1) wait.! !
+!OrquestadorDeSeñalesDeTransitoDeCanning class methodsFor: 'constructor' stamp: 'J.S 3/31/2019 18:03:51'!
+inicializar
+ 
+	self señalDeDetencion: SeñalDeDetencionDeCanning.
+	self señalDePrecaucion: SeñalDePrecaucionDeCanning.
+	self señalDeAvance: SeñalDeAvanceDeCanning.! !
 
 
-!OrquestadorDeSeñalesDeTransitoDeCanning class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 17:25:13'!
+!OrquestadorDeSeñalesDeTransitoDeCanning class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
-	morph := nil.! !
+	morph := nil.
+	señalDeDetencion := SeñalDeDetencionDeCanning.
+	señalDePrecaucion := SeñalDePrecaucionDeCanning.
+	señalDeAvance := SeñalDeAvanceDeCanning.! !
 
 
 !classDefinition: #OrquestadorDeSeñalesDeTransitoDeCorrientes category: #Semaforo!
-DenotativeObjectMorph subclass: #OrquestadorDeSeñalesDeTransitoDeCorrientes
+OrquestadorDeSeñalesDeTransito subclass: #OrquestadorDeSeñalesDeTransitoDeCorrientes
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -71,47 +112,78 @@ DenotativeObjectMorph subclass: #OrquestadorDeSeñalesDeTransitoDeCorrientes
 OrquestadorDeSeñalesDeTransitoDeCorrientes class
 	instanceVariableNames: ''!
 
-!OrquestadorDeSeñalesDeTransitoDeCorrientes class methodsFor: 'morph' stamp: 'J.S 3/31/2019 15:51:49'!
+!OrquestadorDeSeñalesDeTransitoDeCorrientes class methodsFor: 'constructor' stamp: 'J.S 3/31/2019 18:04:41'!
+inicializar
+ 
+	self señalDeDetencion: SeñalDeDetencionDeCorrientes.
+	self señalDePrecaucion: SeñalDePrecaucionDeCorrientes.
+	self señalDeAvance: SeñalDeAvanceDeCorrientes.! !
+
+
+!OrquestadorDeSeñalesDeTransitoDeCorrientes class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	morph := nil.
+	señalDeDetencion := SeñalDeDetencionDeCorrientes.
+	señalDePrecaucion := SeñalDePrecaucionDeCorrientes.
+	señalDeAvance := SeñalDeAvanceDeCorrientes.! !
+
+
+!classDefinition: #Señal category: #Semaforo!
+DenotativeObjectMorph subclass: #Señal
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Semaforo'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Señal class' category: #Semaforo!
+Señal class
+	instanceVariableNames: ''!
+
+!Señal class methodsFor: 'morph' stamp: 'J.S 3/31/2019 17:46:31'!
 createMorph
 
-	^LayoutMorph newColumn
-		morphExtent: 60 @ 130;
-		yourself
-! !
+	^EllipseMorph new
+		color: Color black;
+		yourself! !
 
 
-!OrquestadorDeSeñalesDeTransitoDeCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:06:05'!
-activarFlujoDeAvance
-	SeñalDePrecaucionDeCorrientes prender.
-	(Delay forSeconds: 1) wait.
-	SeñalDeDetencionDeCorrientes apagar.
-	SeñalDePrecaucionDeCorrientes apagar.
-	SeñalDeAvanceDeCorrientes prender.! !
+!Señal class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:46:55'!
+apagar
 
-!OrquestadorDeSeñalesDeTransitoDeCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:10:49'!
-activarFlujoDeDetencion
-	SeñalDePrecaucionDeCorrientes prender.
-	SeñalDeAvanceDeCorrientes apagar.
-	(Delay forSeconds: 1) wait.
-	SeñalDeDetencionDeCorrientes prender.
-	SeñalDePrecaucionDeCorrientes apagar.! !
-
-!OrquestadorDeSeñalesDeTransitoDeCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 16:00:46'!
-apagarSeñales
-	SeñalDeDetencionDeCorrientes apagar.
-	SeñalDePrecaucionDeCorrientes apagar.
-	SeñalDeAvanceDeCorrientes apagar.! !
-
-!OrquestadorDeSeñalesDeTransitoDeCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:19:05'!
-titilarSeñalDePrecaucion
-
-	SeñalDePrecaucionDeCorrientes prender.
-	(Delay forSeconds: 1) wait.
-	SeñalDePrecaucionDeCorrientes apagar.
-	(Delay forSeconds: 1) wait.! !
+self color: Color black.! !
 
 
-!OrquestadorDeSeñalesDeTransitoDeCorrientes class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 17:25:13'!
+!Señal class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	morph := nil.! !
+
+
+!classDefinition: #SeñalDeAvance category: #Semaforo!
+Señal subclass: #SeñalDeAvance
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Semaforo'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'SeñalDeAvance class' category: #Semaforo!
+SeñalDeAvance class
+	instanceVariableNames: ''!
+
+!SeñalDeAvance class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:48:42'!
+prender
+
+self color: Color green! !
+
+
+!SeñalDeAvance class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -119,7 +191,7 @@ initializeCollaboratorsFromFile
 
 
 !classDefinition: #SeñalDeAvanceDeCanning category: #Semaforo!
-DenotativeObjectMorph subclass: #SeñalDeAvanceDeCanning
+SeñalDeAvance subclass: #SeñalDeAvanceDeCanning
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -131,26 +203,7 @@ DenotativeObjectMorph subclass: #SeñalDeAvanceDeCanning
 SeñalDeAvanceDeCanning class
 	instanceVariableNames: ''!
 
-!SeñalDeAvanceDeCanning class methodsFor: 'morph' stamp: 'J.S 3/31/2019 13:21:43'!
-createMorph
-
-	^EllipseMorph new
-		color: Color black;
-		yourself! !
-
-
-!SeñalDeAvanceDeCanning class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 14:37:15'!
-apagar
-
-self color: Color black.! !
-
-!SeñalDeAvanceDeCanning class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 14:35:35'!
-prender
-
-self color: Color green! !
-
-
-!SeñalDeAvanceDeCanning class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 17:25:13'!
+!SeñalDeAvanceDeCanning class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -158,7 +211,7 @@ initializeCollaboratorsFromFile
 
 
 !classDefinition: #SeñalDeAvanceDeCorrientes category: #Semaforo!
-DenotativeObjectMorph subclass: #SeñalDeAvanceDeCorrientes
+SeñalDeAvance subclass: #SeñalDeAvanceDeCorrientes
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -170,26 +223,33 @@ DenotativeObjectMorph subclass: #SeñalDeAvanceDeCorrientes
 SeñalDeAvanceDeCorrientes class
 	instanceVariableNames: ''!
 
-!SeñalDeAvanceDeCorrientes class methodsFor: 'morph' stamp: 'J.S 3/31/2019 15:57:25'!
-createMorph
+!SeñalDeAvanceDeCorrientes class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
 
-	^EllipseMorph new
-		color: Color black;
-		yourself! !
+	morph := nil.! !
 
+
+!classDefinition: #SeñalDeDetencion category: #Semaforo!
+Señal subclass: #SeñalDeDetencion
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Semaforo'!
 
-!SeñalDeAvanceDeCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 15:57:25'!
-apagar
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-self color: Color black.! !
+!classDefinition: 'SeñalDeDetencion class' category: #Semaforo!
+SeñalDeDetencion class
+	instanceVariableNames: ''!
 
-!SeñalDeAvanceDeCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 15:57:25'!
+!SeñalDeDetencion class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:41:11'!
 prender
 
-self color: Color green! !
+self color: Color red! !
 
 
-!SeñalDeAvanceDeCorrientes class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 17:25:13'!
+!SeñalDeDetencion class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -197,7 +257,7 @@ initializeCollaboratorsFromFile
 
 
 !classDefinition: #SeñalDeDetencionDeCanning category: #Semaforo!
-DenotativeObjectMorph subclass: #SeñalDeDetencionDeCanning
+SeñalDeDetencion subclass: #SeñalDeDetencionDeCanning
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -209,26 +269,7 @@ DenotativeObjectMorph subclass: #SeñalDeDetencionDeCanning
 SeñalDeDetencionDeCanning class
 	instanceVariableNames: ''!
 
-!SeñalDeDetencionDeCanning class methodsFor: 'morph' stamp: 'J.S 3/31/2019 14:16:39'!
-createMorph
-
-	^EllipseMorph new
-		color: Color black;
-		yourself! !
-
-
-!SeñalDeDetencionDeCanning class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 14:39:00'!
-apagar
-
-self color: Color black.! !
-
-!SeñalDeDetencionDeCanning class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 14:40:26'!
-prender
-
-self color: Color red! !
-
-
-!SeñalDeDetencionDeCanning class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 17:25:13'!
+!SeñalDeDetencionDeCanning class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -236,7 +277,7 @@ initializeCollaboratorsFromFile
 
 
 !classDefinition: #SeñalDeDetencionDeCorrientes category: #Semaforo!
-DenotativeObjectMorph subclass: #SeñalDeDetencionDeCorrientes
+SeñalDeDetencion subclass: #SeñalDeDetencionDeCorrientes
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -248,26 +289,33 @@ DenotativeObjectMorph subclass: #SeñalDeDetencionDeCorrientes
 SeñalDeDetencionDeCorrientes class
 	instanceVariableNames: ''!
 
-!SeñalDeDetencionDeCorrientes class methodsFor: 'morph' stamp: 'J.S 3/31/2019 15:57:32'!
-createMorph
+!SeñalDeDetencionDeCorrientes class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
 
-	^EllipseMorph new
-		color: Color black;
-		yourself! !
+	morph := nil.! !
 
+
+!classDefinition: #SeñalDePrecaucion category: #Semaforo!
+Señal subclass: #SeñalDePrecaucion
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Semaforo'!
 
-!SeñalDeDetencionDeCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 15:57:32'!
-apagar
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-self color: Color black.! !
+!classDefinition: 'SeñalDePrecaucion class' category: #Semaforo!
+SeñalDePrecaucion class
+	instanceVariableNames: ''!
 
-!SeñalDeDetencionDeCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 15:57:32'!
+!SeñalDePrecaucion class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:50:16'!
 prender
 
-self color: Color red! !
+self color: Color yellow.! !
 
 
-!SeñalDeDetencionDeCorrientes class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 17:25:13'!
+!SeñalDePrecaucion class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -275,7 +323,7 @@ initializeCollaboratorsFromFile
 
 
 !classDefinition: #SeñalDePrecaucionDeCanning category: #Semaforo!
-DenotativeObjectMorph subclass: #SeñalDePrecaucionDeCanning
+SeñalDePrecaucion subclass: #SeñalDePrecaucionDeCanning
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -287,26 +335,7 @@ DenotativeObjectMorph subclass: #SeñalDePrecaucionDeCanning
 SeñalDePrecaucionDeCanning class
 	instanceVariableNames: ''!
 
-!SeñalDePrecaucionDeCanning class methodsFor: 'morph' stamp: 'J.S 3/31/2019 14:16:48'!
-createMorph
-
-	^EllipseMorph new
-		color: Color black;
-		yourself! !
-
-
-!SeñalDePrecaucionDeCanning class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 14:39:10'!
-apagar
-
-self color: Color black.! !
-
-!SeñalDePrecaucionDeCanning class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 14:40:36'!
-prender
-
-self color: Color yellow.! !
-
-
-!SeñalDePrecaucionDeCanning class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 17:25:13'!
+!SeñalDePrecaucionDeCanning class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
@@ -314,7 +343,7 @@ initializeCollaboratorsFromFile
 
 
 !classDefinition: #SeñalDePrecaucionDeCorrientes category: #Semaforo!
-DenotativeObjectMorph subclass: #SeñalDePrecaucionDeCorrientes
+SeñalDePrecaucion subclass: #SeñalDePrecaucionDeCorrientes
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -326,34 +355,109 @@ DenotativeObjectMorph subclass: #SeñalDePrecaucionDeCorrientes
 SeñalDePrecaucionDeCorrientes class
 	instanceVariableNames: ''!
 
-!SeñalDePrecaucionDeCorrientes class methodsFor: 'morph' stamp: 'J.S 3/31/2019 15:57:43'!
-createMorph
-
-	^EllipseMorph new
-		color: Color black;
-		yourself! !
-
-
-!SeñalDePrecaucionDeCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 15:57:43'!
-apagar
-
-self color: Color black.! !
-
-!SeñalDePrecaucionDeCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 15:57:43'!
-prender
-
-self color: Color yellow.! !
-
-
-!SeñalDePrecaucionDeCorrientes class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 17:25:13'!
+!SeñalDePrecaucionDeCorrientes class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
 initializeCollaboratorsFromFile
 	"Auto generated method for loading purposes - Do not modify it"
 
 	morph := nil.! !
 
 
+!classDefinition: #Semaforo category: #Semaforo!
+DenotativeObject subclass: #Semaforo
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Semaforo'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Semaforo class' category: #Semaforo!
+Semaforo class
+	instanceVariableNames: 'orquestadorDeSeñalesDeTransitoA orquestadorDeSeñalesDeTransitoB'!
+
+!Semaforo class methodsFor: 'setters' stamp: 'J.S 3/31/2019 18:13:51'!
+orquestadorDeSeñalesDeTransitoA: unOrquestadorDeSeñalesDeTransito
+	
+	orquestadorDeSeñalesDeTransitoA := unOrquestadorDeSeñalesDeTransito.! !
+
+!Semaforo class methodsFor: 'setters' stamp: 'J.S 3/31/2019 18:14:00'!
+orquestadorDeSeñalesDeTransitoB: unOrquestadorDeSeñalesDeTransito
+	
+	orquestadorDeSeñalesDeTransitoB := unOrquestadorDeSeñalesDeTransito.! !
+
+
+!Semaforo class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 18:15:56'!
+avisarPrecaucionPorEncendido
+	self titilarSeñalDePrecaucion: 5.! !
+
+!Semaforo class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 18:16:28'!
+bloquearPaso: unOrquestadorDeSeñalesDeTransito
+	
+	unOrquestadorDeSeñalesDeTransito activarFlujoDeDetencion.! !
+
+!Semaforo class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 18:16:38'!
+habilitarPaso: unOrquestadorDeSeñalesDeTransito
+	
+	unOrquestadorDeSeñalesDeTransito activarFlujoDeAvance! !
+
+!Semaforo class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 19:03:15'!
+prender
+	orquestadorDeSeñalesDeTransitoA apagarSeñales.
+	orquestadorDeSeñalesDeTransitoB apagarSeñales.
+
+	self avisarPrecaucionPorEncendido.
+	self señalizarCirculacion.
+	! !
+
+!Semaforo class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 19:04:32'!
+señalizarCirculacion
+	
+	| intervaloCambioDePaso |
+	
+	intervaloCambioDePaso := 3.
+	
+	500 timesRepeat: [
+		self bloquearPaso: orquestadorDeSeñalesDeTransitoA.
+		self habilitarPaso: orquestadorDeSeñalesDeTransitoB.
+		
+		(Delay forSeconds: intervaloCambioDePaso) wait.
+		
+		self bloquearPaso: orquestadorDeSeñalesDeTransitoB.
+		self habilitarPaso: orquestadorDeSeñalesDeTransitoA.
+		
+		(Delay forSeconds: intervaloCambioDePaso) wait.
+	]! !
+
+!Semaforo class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 18:18:20'!
+titilarSeñalDePrecaucion: unaCantidadDeVeces
+
+	unaCantidadDeVeces timesRepeat: [
+		orquestadorDeSeñalesDeTransitoA titilarSeñalDePrecaucion.
+		orquestadorDeSeñalesDeTransitoB titilarSeñalDePrecaucion.
+	]! !
+
+
+!Semaforo class methodsFor: 'getters' stamp: 'J.S 3/31/2019 19:10:01'!
+orquestadorDeSeñalesDeTransitoA
+
+	^ orquestadorDeSeñalesDeTransitoA! !
+
+!Semaforo class methodsFor: 'getters' stamp: 'J.S 3/31/2019 19:10:11'!
+orquestadorDeSeñalesDeTransitoB
+
+	^ orquestadorDeSeñalesDeTransitoB! !
+
+
+!Semaforo class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
+
+	orquestadorDeSeñalesDeTransitoA := nil.
+	orquestadorDeSeñalesDeTransitoB := nil.! !
+
+
 !classDefinition: #SemaforoDeCanningYCorrientes category: #Semaforo!
-DenotativeObject subclass: #SemaforoDeCanningYCorrientes
+Semaforo subclass: #SemaforoDeCanningYCorrientes
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -365,61 +469,37 @@ DenotativeObject subclass: #SemaforoDeCanningYCorrientes
 SemaforoDeCanningYCorrientes class
 	instanceVariableNames: ''!
 
-!SemaforoDeCanningYCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:23:51'!
-avisarPrecaucionPorEncendido
-	self titilarSeñalDePrecaucion: 5.! !
-
-!SemaforoDeCanningYCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:06:48'!
-bloquearPaso: unOrquestadorDeSeñalesDeTransito
+!SemaforoDeCanningYCorrientes class methodsFor: 'constructor' stamp: 'J.S 3/31/2019 19:09:37'!
+inicializar
 	
-	unOrquestadorDeSeñalesDeTransito activarFlujoDeDetencion.! !
-
-!SemaforoDeCanningYCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:06:31'!
-habilitarPaso: unOrquestadorDeSeñalesDeTransito
+	self orquestadorDeSeñalesDeTransitoA: OrquestadorDeSeñalesDeTransitoDeCanning.
+	self orquestadorDeSeñalesDeTransitoB: OrquestadorDeSeñalesDeTransitoDeCorrientes.
 	
-	unOrquestadorDeSeñalesDeTransito activarFlujoDeAvance! !
-
-!SemaforoDeCanningYCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:23:58'!
-prender
-	OrquestadorDeSeñalesDeTransitoDeCanning apagarSeñales.
-	OrquestadorDeSeñalesDeTransitoDeCorrientes apagarSeñales.
-
-	self avisarPrecaucionPorEncendido.
-	self señalizarCirculacion.
-	! !
-
-!SemaforoDeCanningYCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 16:30:49'!
-señalizarCirculacion
+	self orquestadorDeSeñalesDeTransitoA inicializar.
+	self orquestadorDeSeñalesDeTransitoB inicializar.
 	
-	| intervaloCambioDePaso |
-	
-	intervaloCambioDePaso := 3.
-	
-	5 timesRepeat: [
-		self bloquearPaso: OrquestadorDeSeñalesDeTransitoDeCorrientes.
-		self habilitarPaso: OrquestadorDeSeñalesDeTransitoDeCanning.
-		
-		(Delay forSeconds: intervaloCambioDePaso) wait.
-		
-		self bloquearPaso: OrquestadorDeSeñalesDeTransitoDeCanning.
-		self habilitarPaso: OrquestadorDeSeñalesDeTransitoDeCorrientes.
-		
-		(Delay forSeconds: intervaloCambioDePaso) wait.
-	]! !
+	self prender.! !
 
-!SemaforoDeCanningYCorrientes class methodsFor: 'funcionamiento' stamp: 'J.S 3/31/2019 17:19:40'!
-titilarSeñalDePrecaucion: unaCantidadDeVeces
 
-	unaCantidadDeVeces timesRepeat: [
-		OrquestadorDeSeñalesDeTransitoDeCanning titilarSeñalDePrecaucion.
-		OrquestadorDeSeñalesDeTransitoDeCorrientes titilarSeñalDePrecaucion.
-	]! !
+!SemaforoDeCanningYCorrientes class methodsFor: 'as yet unclassified' stamp: 'J.S 3/31/2019 19:11:45'!
+initializeCollaboratorsFromFile
+	"Auto generated method for loading purposes - Do not modify it"
 
+	orquestadorDeSeñalesDeTransitoA := OrquestadorDeSeñalesDeTransitoDeCanning.
+	orquestadorDeSeñalesDeTransitoB := OrquestadorDeSeñalesDeTransitoDeCorrientes.! !
+
+OrquestadorDeSeñalesDeTransito initializeAfterFileIn!
 OrquestadorDeSeñalesDeTransitoDeCanning initializeAfterFileIn!
 OrquestadorDeSeñalesDeTransitoDeCorrientes initializeAfterFileIn!
+Señal initializeAfterFileIn!
+SeñalDeAvance initializeAfterFileIn!
 SeñalDeAvanceDeCanning initializeAfterFileIn!
 SeñalDeAvanceDeCorrientes initializeAfterFileIn!
+SeñalDeDetencion initializeAfterFileIn!
 SeñalDeDetencionDeCanning initializeAfterFileIn!
 SeñalDeDetencionDeCorrientes initializeAfterFileIn!
+SeñalDePrecaucion initializeAfterFileIn!
 SeñalDePrecaucionDeCanning initializeAfterFileIn!
 SeñalDePrecaucionDeCorrientes initializeAfterFileIn!
+Semaforo initializeAfterFileIn!
+SemaforoDeCanningYCorrientes initializeAfterFileIn!
