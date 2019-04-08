@@ -161,6 +161,14 @@ assertDoesNotTakeMoreThan: anAmountOfTime toRun: aClosure
 	self assert: (millisecondsAfterRunning-millisecondsBeforeRunning) < anAmountOfTime
 ! !
 
+!CustomerBookTest methodsFor: 'assertions' stamp: 'J.S 4/4/2019 22:03:11'!
+assertFromCustomerBook: aCustomerBook activeCustomers: activeCustomers 
+suspendedCustomers: suspendedCustomers customers: customers
+	
+	self assert: activeCustomers equals: aCustomerBook numberOfActiveCustomers.
+	self assert: suspendedCustomers equals: aCustomerBook numberOfSuspendedCustomers.
+	self assert: customers equals: aCustomerBook numberOfCustomers.! !
+
 !CustomerBookTest methodsFor: 'assertions' stamp: 'J.S 4/4/2019 21:07:02'!
 assertThatBlock: aClosure throwsError: anError andExecuteAfterError: postExecutionClosure
 	
@@ -170,19 +178,11 @@ assertThatBlock: aClosure throwsError: anError andExecuteAfterError: postExecuti
 		do: postExecutionClosure! !
 
 
-!CustomerBookTest methodsFor: 'as yet unclassified' stamp: 'J.S 4/4/2019 21:38:55'!
+!CustomerBookTest methodsFor: 'edit customer book' stamp: 'J.S 4/4/2019 21:38:55'!
 addAndSuspendCustomer: aCustomer toCustomerBook: aCustomerBook
 
 	aCustomerBook addCustomerNamed: aCustomer.
 	aCustomerBook suspendCustomerNamed: aCustomer.! !
-
-!CustomerBookTest methodsFor: 'as yet unclassified' stamp: 'J.S 4/4/2019 22:03:11'!
-assertFromCustomerBook: aCustomerBook activeCustomers: activeCustomers 
-suspendedCustomers: suspendedCustomers customers: customers
-	
-	self assert: activeCustomers equals: aCustomerBook numberOfActiveCustomers.
-	self assert: suspendedCustomers equals: aCustomerBook numberOfSuspendedCustomers.
-	self assert: customers equals: aCustomerBook numberOfCustomers.! !
 
 
 !classDefinition: #CustomerBook category: #'CodigoRepetido-Ejercicio'!
@@ -211,11 +211,11 @@ initialize
 	suspended:= OrderedCollection new.! !
 
 
-!CustomerBook methodsFor: 'customer management' stamp: 'NR 4/3/2019 10:14:26'!
+!CustomerBook methodsFor: 'customer management' stamp: 'J.S 4/7/2019 21:41:24'!
 addCustomerNamed: aName
 
 	aName isEmpty ifTrue: [ self signalCustomerNameCannotBeEmpty ].
-	((active includes: aName) or: [suspended includes: aName]) ifTrue: [ self signalCustomerAlreadyExists ].
+	(self includesCustomerNamed: aName) ifTrue: [ self signalCustomerAlreadyExists ].
 	
 	active add: aName ! !
 
@@ -244,19 +244,6 @@ removeCustomerNamed: aName
 	].
 	^ aName.
 ! !
-
-!CustomerBook methodsFor: 'customer management' stamp: 'J.S 4/6/2019 17:13:00'!
-removeCustomerNamed: aName fromCollection: aCollection
-	
-	1 to: aCollection size do: 
-	[ :index |
-		aName = (aCollection at: index)
-			ifTrue: [
-				aCollection removeAt: index.
-				^ true.
-			]
-	].
-	^ false.! !
 
 !CustomerBook methodsFor: 'customer management' stamp: 'HernanWilkinson 7/6/2011 17:52'!
 signalCustomerAlreadyExists 
