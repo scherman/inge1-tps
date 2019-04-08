@@ -178,7 +178,7 @@ assertThatBlock: aClosure throwsError: anError andExecuteAfterError: postExecuti
 		do: postExecutionClosure! !
 
 
-!CustomerBookTest methodsFor: 'edit customer book' stamp: 'J.S 4/4/2019 21:38:55'!
+!CustomerBookTest methodsFor: 'editions on customer book' stamp: 'J.S 4/4/2019 21:38:55'!
 addAndSuspendCustomer: aCustomer toCustomerBook: aCustomerBook
 
 	aCustomerBook addCustomerNamed: aCustomer.
