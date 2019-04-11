@@ -77,7 +77,7 @@ test04CanNotRemoveAnInvalidCustomer
 			self assert: (customerBook includesCustomerNamed: johnLennon) ].
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'J.S 4/6/2019 16:55:30'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'J.S 4/7/2019 23:22:27'!
 test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney|
@@ -87,14 +87,14 @@ test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 
 	self addAndSuspendCustomer: paulMcCartney toCustomerBook: customerBook.
 	
-	self assertFromCustomerBook: customerBook activeCustomers: 0 suspendedCustomers: 1 customers: 1.
+	self assertFromCustomerBook: customerBook activesCount: 0 suspendedCount: 1 totalCount: 1.
 	self assert: (customerBook includesCustomerNamed: paulMcCartney).
 	
 
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'J.S 4/6/2019 16:56:44'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'J.S 4/7/2019 23:22:45'!
 test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney|
@@ -106,7 +106,7 @@ test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 	customerBook removeCustomerNamed: paulMcCartney.
 	
 	
-	self assertFromCustomerBook: customerBook activeCustomers: 0 suspendedCustomers: 0 customers: 0.
+	self assertFromCustomerBook: customerBook activesCount: 0 suspendedCount: 0 totalCount: 0.
 
 	self deny: (customerBook includesCustomerNamed: paulMcCartney).
 
@@ -131,15 +131,14 @@ test07CanNotSuspendAnInvalidCustomer
 			self assert: (customerBook includesCustomerNamed: johnLennon) ].
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'J.S 4/4/2019 21:09:17'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'J.S 4/7/2019 23:43:29'!
 test08CanNotSuspendAnAlreadySuspendedCustomer
 	
 	| customerBook johnLennon |
 			
 	customerBook := CustomerBook new.
 	johnLennon := 'John Lennon'.
-	customerBook addCustomerNamed: johnLennon.
-	customerBook suspendCustomerNamed: johnLennon.
+	self addAndSuspendCustomer: johnLennon toCustomerBook: customerBook.
 	
 	self 
 		assertThatBlock: [ customerBook suspendCustomerNamed: johnLennon.]
@@ -150,24 +149,18 @@ test08CanNotSuspendAnAlreadySuspendedCustomer
 ! !
 
 
-!CustomerBookTest methodsFor: 'assertions' stamp: 'J.S 4/4/2019 20:02:30'!
+!CustomerBookTest methodsFor: 'assertions' stamp: 'J.S 4/7/2019 23:39:23'!
 assertDoesNotTakeMoreThan: anAmountOfTime toRun: aClosure
-	|millisecondsBeforeRunning millisecondsAfterRunning|.
-
-	millisecondsBeforeRunning := Time millisecondClockValue * millisecond.
-	aClosure value.
-	millisecondsAfterRunning := Time millisecondClockValue * millisecond.
-	
-	self assert: (millisecondsAfterRunning-millisecondsBeforeRunning) < anAmountOfTime
+	self assert: (aClosure timeToRun) < anAmountOfTime
 ! !
 
-!CustomerBookTest methodsFor: 'assertions' stamp: 'J.S 4/4/2019 22:03:11'!
-assertFromCustomerBook: aCustomerBook activeCustomers: activeCustomers 
-suspendedCustomers: suspendedCustomers customers: customers
+!CustomerBookTest methodsFor: 'assertions' stamp: 'J.S 4/7/2019 23:22:04'!
+assertFromCustomerBook: aCustomerBook activesCount: anExpectedCountOfActiveCustomers
+suspendedCount: anExpectedCountOfSuspendedCustomers totalCount: anExpectedTotalCountOfCustomers
 	
-	self assert: activeCustomers equals: aCustomerBook numberOfActiveCustomers.
-	self assert: suspendedCustomers equals: aCustomerBook numberOfSuspendedCustomers.
-	self assert: customers equals: aCustomerBook numberOfCustomers.! !
+	self assert: anExpectedCountOfActiveCustomers equals: aCustomerBook numberOfActiveCustomers.
+	self assert: anExpectedCountOfSuspendedCustomers equals: aCustomerBook numberOfSuspendedCustomers.
+	self assert: anExpectedTotalCountOfCustomers equals: aCustomerBook numberOfCustomers.! !
 
 !CustomerBookTest methodsFor: 'assertions' stamp: 'J.S 4/4/2019 21:07:02'!
 assertThatBlock: aClosure throwsError: anError andExecuteAfterError: postExecutionClosure
@@ -178,7 +171,7 @@ assertThatBlock: aClosure throwsError: anError andExecuteAfterError: postExecuti
 		do: postExecutionClosure! !
 
 
-!CustomerBookTest methodsFor: 'editions on customer book' stamp: 'J.S 4/4/2019 21:38:55'!
+!CustomerBookTest methodsFor: 'customer management' stamp: 'J.S 4/4/2019 21:38:55'!
 addAndSuspendCustomer: aCustomer toCustomerBook: aCustomerBook
 
 	aCustomerBook addCustomerNamed: aCustomer.
