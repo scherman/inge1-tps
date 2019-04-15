@@ -640,7 +640,7 @@ asDenominatorOf: aNumerator
 	
 	^ Fraccion new initializeWith: aNumerator over: self! !
 
-!EnteroMayorAUno methodsFor: 'arithmetic operations' stamp: 'J.S 4/14/2019 18:18:07'!
+!EnteroMayorAUno methodsFor: 'arithmetic operations' stamp: 'J.S 4/14/2019 23:23:32'!
 divideToEntero: aDividend
 
 	| denominator greatestCommonDivisor numerator |
@@ -648,9 +648,7 @@ divideToEntero: aDividend
 	numerator := aDividend // greatestCommonDivisor.
 	denominator := self // greatestCommonDivisor.
 	
-	^denominator asDenominatorOf: numerator.
-	"(denominator integerValue = 1) ifTrue: [^numerator].
-	^ Fraccion with: numerator over: denominator"! !
+	^denominator asDenominatorOf: numerator.! !
 
 !EnteroMayorAUno methodsFor: 'arithmetic operations' stamp: 'J.S 4/14/2019 17:51:27'!
 fibonacci
