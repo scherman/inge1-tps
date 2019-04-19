@@ -139,10 +139,60 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 
 !classDefinition: #SentenceFinderByPrefixTest category: #'Stack-Exercise'!
 TestCase subclass: #SentenceFinderByPrefixTest
-	instanceVariableNames: ''
+	instanceVariableNames: 'aSentenceFinderByPrefix'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
+
+!SentenceFinderByPrefixTest methodsFor: 'setUp/tearDown' stamp: 'J.S 4/19/2019 14:32:02'!
+setUp
+
+	| aStack |
+	
+	aStack := OOStack new.
+	
+	aStack push: 'simétrica definida positiva'.
+	aStack push: 'simetrica definida positiva'.
+	aStack push: 'sime trica definida positiva'.
+	aStack push: 'mi mama me mima'.
+	aStack push: 'simetricadefinidapositiva'.
+	
+	aSentenceFinderByPrefix := SentenceFinderByPrefix with: aStack .! !
+
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'J.S 4/19/2019 15:29:00'!
+test01AnEmptyPrefixOnFindMethodShouldRaiseError
+	^self should: [aSentenceFinderByPrefix find: ''] raise: Error asserting: [ :anError | self assert: anError messageText = SentenceFinderByPrefix prefixCannotBeEmptyErrorDescription ]
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'J.S 4/19/2019 15:43:28'!
+test02APrefixWithSpacesOnFindMethodShouldRaiseError
+	^self should: [aSentenceFinderByPrefix find: 'Paul McCartney'] raise: Error asserting: [ :anError | self assert: anError messageText = SentenceFinderByPrefix prefixCannotContainSpacesErrorDescription ]
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'J.S 4/19/2019 15:46:10'!
+test03APrefixThatIsntInTheStackShouldReturnAnEmptyCollection
+	^self assert: (aSentenceFinderByPrefix find: 'paulmccartney') isEmpty
+! !
+
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 15:20:30'!
+should: aBlockToRun raise: anExceptionType 
+
+	^self should: aBlockToRun raise: anExceptionType asserting: []
+
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 15:19:48'!
+should: aBlockToRun raise: anExceptionType asserting: aVerificationBlock
+
+	[ aBlockToRun value.
+	self fail ]
+		on: anExceptionType 
+		do: aVerificationBlock 
+	
+! !
 
 
 !classDefinition: #OOStack category: #'Stack-Exercise'!
@@ -203,10 +253,72 @@ stackEmptyErrorDescription
 
 !classDefinition: #SentenceFinderByPrefix category: #'Stack-Exercise'!
 Object subclass: #SentenceFinderByPrefix
-	instanceVariableNames: ''
+	instanceVariableNames: 'stack'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
+
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 14:08:05'!
+find: aPreffix
+
+	"| anAuxiliaryStack topElement elements |.
+	elements := OrderedCollection new.
+	
+	[ topElement := stack pop.
+	anAuxiliaryStack := stack.
+	(topElement beginsWith: aPreffix) ifTrue: [
+		elements add: topElement.
+		].
+	^elements addAll: 
+	]
+	on: (self error: OOStack stackEmptyErrorDescription)
+	do: [^elements]."
+	
+	| allSentencesInStack |
+	
+	(aPreffix isEmpty) ifTrue: [self error: self class prefixCannotBeEmptyErrorDescription ].
+	(aPreffix includesSubString: ' ') ifTrue: [self error: self class prefixCannotContainSpacesErrorDescription ].
+	
+	
+	allSentencesInStack  := self getElementsFromStack.
+	^allSentencesInStack select: [:anElement | anElement beginsWith: aPreffix]! !
+
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 12:02:28'!
+getElementsFromStack
+
+	| allSentencesInStack |.
+	
+	allSentencesInStack  := OrderedCollection  new.
+	
+	
+	[ stack isEmpty ] whileFalse: [
+		allSentencesInStack addFirst: stack pop.
+	].	
+	
+	allSentencesInStack do: [ :aValue | stack push: aValue ].
+	^allSentencesInStack ! !
+
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 10:30:33'!
+initializeWith: aStack
+	stack := aStack! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'SentenceFinderByPrefix class' category: #'Stack-Exercise'!
+SentenceFinderByPrefix class
+	instanceVariableNames: 'uniqueInstance'!
+
+!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 13:52:28'!
+prefixCannotBeEmptyErrorDescription
+	^'The prefix cannot be empty'! !
+
+!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 13:53:00'!
+prefixCannotContainSpacesErrorDescription
+	^'The prefix cannot contain spaces'! !
+
+!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 10:29:59'!
+with: aStack
+	^ self new initializeWith: aStack! !
 
 
 !classDefinition: #StackBottom category: #'Stack-Exercise'!
