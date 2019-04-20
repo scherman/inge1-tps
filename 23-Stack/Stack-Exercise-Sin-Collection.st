@@ -275,11 +275,11 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 22:52:50'!
-add: aSentence to: aCollection ifBeginsWith: aPrefix
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 23:01:38'!
+add: aSentence to: aSet ifBeginsWith: aPrefix
 
 	(aSentence beginsWith: aPrefix) ifTrue: [
-		aCollection add: aSentence.
+		aSet add: aSentence.
 	].
 ! !
 
@@ -296,12 +296,12 @@ find: aPrefix
 	^self getElementsBeginningWith: aPrefix.
 ! !
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 22:53:01'!
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 23:01:47'!
 getElementsBeginningWith: aPrefix
 
 	|  sentencesBeginningWithPrefix  |.
 	
-	sentencesBeginningWithPrefix := Bag new.
+	sentencesBeginningWithPrefix := Set new.
 	
 	^self select: [:aSentence | self add: aSentence to: sentencesBeginningWithPrefix ifBeginsWith: aPrefix] from: stack using: sentencesBeginningWithPrefix.
 ! !
@@ -310,8 +310,8 @@ getElementsBeginningWith: aPrefix
 initializeWith: aStack
 	stack := aStack! !
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 22:51:12'!
-select: aBlock from: aStack using: aBagOfElements
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'J.S 4/19/2019 23:02:02'!
+select: aBlock from: aStack using: aSetOfSentences
 
 	| aSentence |.
 	
@@ -319,11 +319,11 @@ select: aBlock from: aStack using: aBagOfElements
 	[ 
 		aSentence := aStack pop.
 		aBlock value: aSentence.
-		self select: aBlock from: aStack using: aBagOfElements.
+		self select: aBlock from: aStack using: aSetOfSentences.
 		aStack push: aSentence.
 	].
 
-	^aBagOfElements
+	^aSetOfSentences
 ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
