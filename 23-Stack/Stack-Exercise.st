@@ -296,8 +296,8 @@ countChainSize
 
 	self subclassResponsibility.! !
 
-!LinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 16:16:16'!
-previous
+!LinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 18:56:35'!
+next
 
 	self subclassResponsibility.! !
 
@@ -325,10 +325,10 @@ countChainSize
 	
 	^0.! !
 
-!NullLinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:21:16'!
-previous
+!NullLinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 18:58:39'!
+next
 
-	^OOStack stackEmptyErrorDescription ! !
+	^self error: OOStack stackEmptyErrorDescription ! !
 
 !NullLinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:21:20'!
 value
@@ -344,20 +344,20 @@ isEmpty
 
 !classDefinition: #RealLinkedListElement category: #'Stack-Exercise'!
 LinkedListElement subclass: #RealLinkedListElement
-	instanceVariableNames: 'value previous'
+	instanceVariableNames: 'value next'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!RealLinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 14:50:21'!
+!RealLinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 18:58:05'!
 countChainSize
 
-	^1 + previous countChainSize.! !
+	^1 + next countChainSize.! !
 
-!RealLinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:25:13'!
-previous
+!RealLinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 18:57:58'!
+next
 
-	^previous ! !
+	^next ! !
 
 !RealLinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:25:22'!
 value
@@ -371,11 +371,11 @@ isEmpty
 	^false.! !
 
 
-!RealLinkedListElement methodsFor: 'initialization' stamp: 'Jonathan Scherman 4/20/2019 02:13:50'!
-initializeWithValue: aValue previous: aList
+!RealLinkedListElement methodsFor: 'initialization' stamp: 'js 4/21/2019 18:58:21'!
+initializeWithValue: aValue next: aLink
 
 	value := aValue.
-	previous := aList! !
+	next := aLink! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -383,10 +383,10 @@ initializeWithValue: aValue previous: aList
 RealLinkedListElement class
 	instanceVariableNames: ''!
 
-!RealLinkedListElement class methodsFor: 'instance creation' stamp: 'Jonathan Scherman 4/20/2019 02:28:46'!
-withValue: aValue previous: anElement
+!RealLinkedListElement class methodsFor: 'instance creation' stamp: 'js 4/21/2019 19:00:22'!
+withValue: aValue next: aLink
 
-	^ self new initializeWithValue: aValue previous: anElement! !
+	^ self new initializeWithValue: aValue next: aLink! !
 
 
 !classDefinition: #OOStack category: #'Stack-Exercise'!
@@ -402,21 +402,21 @@ isEmpty
 	^topOfStack isEmpty.! !
 
 
-!OOStack methodsFor: 'functionality' stamp: 'js 4/21/2019 14:20:07'!
+!OOStack methodsFor: 'functionality' stamp: 'js 4/21/2019 18:58:54'!
 pop
 
 	| poppedElement |
 	
 	poppedElement := topOfStack value.
-	topOfStack := topOfStack previous.
+	topOfStack := topOfStack next.
 	^poppedElement! !
 
-!OOStack methodsFor: 'functionality' stamp: 'js 4/21/2019 14:20:13'!
+!OOStack methodsFor: 'functionality' stamp: 'js 4/21/2019 18:59:26'!
 push: aValue 
 
 	| newElement |
 	
-	newElement := RealLinkedListElement withValue: aValue previous: topOfStack.
+	newElement := RealLinkedListElement withValue: aValue next: topOfStack.
 	topOfStack := newElement! !
 
 !OOStack methodsFor: 'functionality' stamp: 'js 4/21/2019 15:26:17'!
