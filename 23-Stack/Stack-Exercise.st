@@ -144,7 +144,7 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefixTest methodsFor: 'setUp/tearDown' stamp: 'js 4/21/2019 15:20:19'!
+!SentenceFinderByPrefixTest methodsFor: 'setUp' stamp: 'js 4/21/2019 15:20:19'!
 setUp
 
 	| aStack |
@@ -173,22 +173,18 @@ test02APrefixWithSpacesOnFindMethodShouldRaiseError
 
 	self assertThatFindingWithPrefix: 'Paul McCartney' throwsErrorWithMessageText: SentenceFinderByPrefix prefixCannotContainSpacesErrorDescription.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 15:24:31'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:21:21'!
 test03AnEmptyStackShouldReturnAnEmptyCollection
 	
 	aSentenceFinderByPrefix := SentenceFinderByPrefix with: OOStack new.
 
-	self 
-		assert: aSentenceFinderByPrefix 
-		doesNotFindSentencesWithPrefix: 'nonEmptyPrefix' .
+	self assertASentenceFinderDoesNotFindSentencesWithPrefix: 'nonEmptyPrefix' .
 ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'Jonathan Scherman 4/20/2019 03:55:19'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:21:30'!
 test04APrefixThatIsNotInTheStackShouldReturnAnEmptyCollection
 
-	self 
-		assert: aSentenceFinderByPrefix 
-		doesNotFindSentencesWithPrefix: 'paulmccartney'.
+	self assertASentenceFinderDoesNotFindSentencesWithPrefix: 'paulmccartney'.
 ! !
 
 !SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 15:51:51'!
@@ -202,12 +198,10 @@ test05FindShouldReturnAllElementsWithTheGivenPrefix
 	self assert: aCollection = theExpectedCollection 
 ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'Jonathan Scherman 4/20/2019 03:55:30'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:21:44'!
 test06FindShouldBeCaseSensitive
 	
-	self 
-		assert: aSentenceFinderByPrefix 
-		doesNotFindSentencesWithPrefix: 'Sime'.! !
+	self assertASentenceFinderDoesNotFindSentencesWithPrefix: 'Sime'.! !
 
 !SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 15:51:56'!
 test07FindShouldReturnRepeatedSentecesAsWell
@@ -218,14 +212,13 @@ test07FindShouldReturnRepeatedSentecesAsWell
 	
 	self assert: expectedSentences equals: sentencesContainingPrefix .! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:06:21'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:22:50'!
 test08FindShouldPreserveTheStackGivenAPrefixThatIsInASentence
 	
 	|aStack aCopyOfTheStack anotherSentenceFinderByPrefix|
 	aStack := OOStack new.
 	aStack push: aSentenceStartingWithSime.
 	aStack push: anotherSentenceStartingWithSime.
-	
 	aCopyOfTheStack :=  aStack copy.
 	
 	anotherSentenceFinderByPrefix := SentenceFinderByPrefix with: aStack.
@@ -233,7 +226,7 @@ test08FindShouldPreserveTheStackGivenAPrefixThatIsInASentence
 	
 	self assert:  aStack containsTheSameAs: aCopyOfTheStack! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:10:04'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:22:43'!
 test09FindShouldPreserveTheStackGivenAPrefixThatIsntInASentence
 	
 	|aStack aCopyOfTheStack anotherSentenceFinderByPrefix|
@@ -248,7 +241,7 @@ test09FindShouldPreserveTheStackGivenAPrefixThatIsntInASentence
 	self assert:  aStack containsTheSameAs: aCopyOfTheStack! !
 
 
-!SentenceFinderByPrefixTest methodsFor: 'asserting' stamp: 'js 4/21/2019 16:05:23'!
+!SentenceFinderByPrefixTest methodsFor: 'assertion' stamp: 'js 4/21/2019 16:05:23'!
 assert: aStack containsTheSameAs: anotherStack
 
 	[aStack isEmpty] whileFalse:
@@ -256,12 +249,12 @@ assert: aStack containsTheSameAs: anotherStack
 		self assert: aStack pop equals: anotherStack pop.
 	].! !
 
-!SentenceFinderByPrefixTest methodsFor: 'asserting' stamp: 'Jonathan Scherman 4/20/2019 03:50:40'!
-assert: asd doesNotFindSentencesWithPrefix: aPrefix
+!SentenceFinderByPrefixTest methodsFor: 'assertion' stamp: 'js 4/21/2019 16:20:40'!
+assertASentenceFinderDoesNotFindSentencesWithPrefix: aPrefix
 
-	self assert: (asd find: aPrefix) isEmpty.! !
+	self assert: (aSentenceFinderByPrefix find: aPrefix) isEmpty.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'asserting' stamp: 'Jonathan Scherman 4/20/2019 04:01:52'!
+!SentenceFinderByPrefixTest methodsFor: 'assertion' stamp: 'Jonathan Scherman 4/20/2019 04:01:52'!
 assertThatFindingWithPrefix: aPrefix throwsErrorWithMessageText: aMessageText
  
 	self 
@@ -270,15 +263,7 @@ assertThatFindingWithPrefix: aPrefix throwsErrorWithMessageText: aMessageText
 		asserting: [ :anError | self assert: anError messageText = aMessageText ]
 ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'asserting' stamp: 'J.S 4/19/2019 15:20:30'!
-should: aBlockToRun raise: anExceptionType 
-
-	^self should: aBlockToRun raise: anExceptionType asserting: []
-
-	
-! !
-
-!SentenceFinderByPrefixTest methodsFor: 'asserting' stamp: 'J.S 4/19/2019 15:19:48'!
+!SentenceFinderByPrefixTest methodsFor: 'assertion' stamp: 'J.S 4/19/2019 15:19:48'!
 should: aBlockToRun raise: anExceptionType asserting: aVerificationBlock
 
 	[ aBlockToRun value.
@@ -296,26 +281,26 @@ Object subclass: #LinkedListElement
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!LinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 14:50:21'!
+!LinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 16:16:10'!
 countChainSize
 
-	self shouldBeImplemented.! !
+	self subclassResponsibility.! !
 
-!LinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:24:15'!
+!LinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 16:16:16'!
 previous
 
-	self shouldBeImplemented.! !
+	self subclassResponsibility.! !
 
-!LinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:24:19'!
+!LinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 16:16:22'!
 value
 
-	self shouldBeImplemented.! !
+	self subclassResponsibility.! !
 
 
-!LinkedListElement methodsFor: 'inspecting' stamp: 'Jonathan Scherman 4/20/2019 02:23:56'!
+!LinkedListElement methodsFor: 'inspecting' stamp: 'js 4/21/2019 16:16:28'!
 isEmpty
 
-	self shouldBeImplemented.! !
+	self subclassResponsibility.! !
 
 
 !classDefinition: #NullLinkedListElement category: #'Stack-Exercise'!
