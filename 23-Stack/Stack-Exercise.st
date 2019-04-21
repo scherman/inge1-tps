@@ -139,17 +139,19 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 
 !classDefinition: #SentenceFinderByPrefixTest category: #'Stack-Exercise'!
 TestCase subclass: #SentenceFinderByPrefixTest
-	instanceVariableNames: 'aSentenceFinderByPrefix aRepeatedSentence aSentenceStartingWithSime anotherSentenceStartingWithSime'
+	instanceVariableNames: 'aSentenceFinderByPrefix aRepeatedSentence aSentenceStartingWithSime anotherSentenceStartingWithSime aSentenceFinderWithEmptyStack'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefixTest methodsFor: 'setUp' stamp: 'js 4/21/2019 15:20:19'!
+!SentenceFinderByPrefixTest methodsFor: 'setUp' stamp: 'js 4/21/2019 18:24:15'!
 setUp
 
 	| aStack |
 	
 	aStack := OOStack new.
+	aSentenceFinderWithEmptyStack := SentenceFinderByPrefix with: aStack.
+	
 	aRepeatedSentence  := 'mi mama me mima'.
 	aSentenceStartingWithSime := 'simetrica definida positiva'.
 	anotherSentenceStartingWithSime := 'simetricadefinidapositiva'.
@@ -160,35 +162,43 @@ setUp
 	aStack push: aRepeatedSentence.
 	aStack push: anotherSentenceStartingWithSime .
 	
-	aSentenceFinderByPrefix := SentenceFinderByPrefix with: aStack .! !
+	aSentenceFinderByPrefix := SentenceFinderByPrefix with: aStack.! !
 
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'Jonathan Scherman 4/20/2019 04:02:24'!
-test01AnEmptyPrefixOnFindMethodShouldRaiseError
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:26:11'!
+test01AnEmptyPrefixOnFindMethodWithNonEmptyStackShouldRaiseError
 
-	self assertThatFindingWithPrefix: '' throwsErrorWithMessageText: SentenceFinderByPrefix prefixCannotBeEmptyErrorDescription .! !
+	self assertThatFindingWithPrefix: '' on: aSentenceFinderByPrefix throwsErrorWithMessageText: SentenceFinderByPrefix prefixCannotBeEmptyErrorDescription .! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'Jonathan Scherman 4/20/2019 04:02:52'!
-test02APrefixWithSpacesOnFindMethodShouldRaiseError
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:26:49'!
+test02AnEmptyPrefixOnFindMethodWithAnEmptyStackShouldRaiseError
 
-	self assertThatFindingWithPrefix: 'Paul McCartney' throwsErrorWithMessageText: SentenceFinderByPrefix prefixCannotContainSpacesErrorDescription.! !
+	self assertThatFindingWithPrefix: '' on: aSentenceFinderWithEmptyStack throwsErrorWithMessageText: SentenceFinderByPrefix prefixCannotBeEmptyErrorDescription .! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:21:21'!
-test03AnEmptyStackShouldReturnAnEmptyCollection
-	
-	aSentenceFinderByPrefix := SentenceFinderByPrefix with: OOStack new.
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:27:22'!
+test03APrefixWithSpacesOnFindMethodWithNonEmptyStackShouldRaiseError
 
-	self assertASentenceFinderDoesNotFindSentencesWithPrefix: 'nonEmptyPrefix' .
+	self assertThatFindingWithPrefix: 'Paul McCartney' on: aSentenceFinderByPrefix throwsErrorWithMessageText: SentenceFinderByPrefix prefixCannotContainSpacesErrorDescription.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:28:04'!
+test04APrefixWithSpacesOnFindMethodWithEmptyStackShouldRaiseError
+
+	self assertThatFindingWithPrefix: 'Paul McCartney' on: aSentenceFinderWithEmptyStack throwsErrorWithMessageText: SentenceFinderByPrefix prefixCannotContainSpacesErrorDescription.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:32:02'!
+test05AnEmptyStackShouldReturnAnEmptyCollection
+
+	self assert: aSentenceFinderWithEmptyStack DoesNotFindSentencesWithPrefix: 'nonEmptyPrefix' .
 ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:21:30'!
-test04APrefixThatIsNotInTheStackShouldReturnAnEmptyCollection
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:32:39'!
+test06APrefixThatIsNotInTheStackShouldReturnAnEmptyCollection
 
-	self assertASentenceFinderDoesNotFindSentencesWithPrefix: 'paulmccartney'.
+	self assert: aSentenceFinderByPrefix DoesNotFindSentencesWithPrefix: 'paulmccartney'.
 ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 15:51:51'!
-test05FindShouldReturnAllElementsWithTheGivenPrefix
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:33:08'!
+test07FindShouldReturnAllElementsWithTheGivenPrefix
 	
 	|aCollection theExpectedCollection|
 	
@@ -198,13 +208,13 @@ test05FindShouldReturnAllElementsWithTheGivenPrefix
 	self assert: aCollection = theExpectedCollection 
 ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:21:44'!
-test06FindShouldBeCaseSensitive
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:34:47'!
+test08FindShouldBeCaseSensitive
 	
-	self assertASentenceFinderDoesNotFindSentencesWithPrefix: 'Sime'.! !
+	self assert: aSentenceFinderByPrefix DoesNotFindSentencesWithPrefix: 'Sime'.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 15:51:56'!
-test07FindShouldReturnRepeatedSentecesAsWell
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:33:34'!
+test09FindShouldReturnRepeatedSentecesAsWell
 	
 	| sentencesContainingPrefix expectedSentences |
 	sentencesContainingPrefix := aSentenceFinderByPrefix  find: 'mi'.
@@ -212,8 +222,8 @@ test07FindShouldReturnRepeatedSentecesAsWell
 	
 	self assert: expectedSentences equals: sentencesContainingPrefix .! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:22:50'!
-test08FindShouldPreserveTheStackGivenAPrefixThatIsInASentence
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:33:57'!
+test10FindShouldPreserveTheStackGivenAPrefixThatIsInASentence
 	
 	|aStack aCopyOfTheStack anotherSentenceFinderByPrefix|
 	aStack := OOStack new.
@@ -226,8 +236,8 @@ test08FindShouldPreserveTheStackGivenAPrefixThatIsInASentence
 	
 	self assert:  aStack containsTheSameAs: aCopyOfTheStack! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:22:43'!
-test09FindShouldPreserveTheStackGivenAPrefixThatIsntInASentence
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 18:34:09'!
+test11FindShouldPreserveTheStackGivenAPrefixThatIsntInASentence
 	
 	|aStack aCopyOfTheStack anotherSentenceFinderByPrefix|
 	aStack := OOStack new.
@@ -241,6 +251,11 @@ test09FindShouldPreserveTheStackGivenAPrefixThatIsntInASentence
 	self assert:  aStack containsTheSameAs: aCopyOfTheStack! !
 
 
+!SentenceFinderByPrefixTest methodsFor: 'assertion' stamp: 'js 4/21/2019 18:31:36'!
+assert: anySentenceFinderByPrefix DoesNotFindSentencesWithPrefix: aPrefix
+
+	self assert: (anySentenceFinderByPrefix find: aPrefix) isEmpty.! !
+
 !SentenceFinderByPrefixTest methodsFor: 'assertion' stamp: 'js 4/21/2019 16:05:23'!
 assert: aStack containsTheSameAs: anotherStack
 
@@ -249,16 +264,11 @@ assert: aStack containsTheSameAs: anotherStack
 		self assert: aStack pop equals: anotherStack pop.
 	].! !
 
-!SentenceFinderByPrefixTest methodsFor: 'assertion' stamp: 'js 4/21/2019 16:20:40'!
-assertASentenceFinderDoesNotFindSentencesWithPrefix: aPrefix
-
-	self assert: (aSentenceFinderByPrefix find: aPrefix) isEmpty.! !
-
-!SentenceFinderByPrefixTest methodsFor: 'assertion' stamp: 'Jonathan Scherman 4/20/2019 04:01:52'!
-assertThatFindingWithPrefix: aPrefix throwsErrorWithMessageText: aMessageText
+!SentenceFinderByPrefixTest methodsFor: 'assertion' stamp: 'js 4/21/2019 18:18:45'!
+assertThatFindingWithPrefix: aPrefix on: anySentenceFinderByPrefix throwsErrorWithMessageText: aMessageText
  
 	self 
-		should: [aSentenceFinderByPrefix find: aPrefix] 
+		should: [anySentenceFinderByPrefix find: aPrefix] 
 		raise: Error 
 		asserting: [ :anError | self assert: anError messageText = aMessageText ]
 ! !
