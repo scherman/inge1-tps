@@ -76,7 +76,7 @@ test06TopReturnsLastPushedObject
 	self assert: stack top = pushedObject.
 	! !
 
-!OOStackTest methodsFor: 'test' stamp: 'HernanWilkinson 5/7/2012 11:36'!
+!OOStackTest methodsFor: 'test' stamp: 'js 4/21/2019 15:27:14'!
 test07TopDoesNotRemoveObjectFromStack
 
 	| stack pushedObject |
@@ -139,23 +139,26 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 
 !classDefinition: #SentenceFinderByPrefixTest category: #'Stack-Exercise'!
 TestCase subclass: #SentenceFinderByPrefixTest
-	instanceVariableNames: 'aSentenceFinderByPrefix'
+	instanceVariableNames: 'aSentenceFinderByPrefix aRepeatedSentence aSentenceStartingWithSime anotherSentenceStartingWithSime'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefixTest methodsFor: 'setUp/tearDown' stamp: 'J.S 4/19/2019 14:32:02'!
+!SentenceFinderByPrefixTest methodsFor: 'setUp/tearDown' stamp: 'js 4/21/2019 15:20:19'!
 setUp
 
 	| aStack |
 	
 	aStack := OOStack new.
+	aRepeatedSentence  := 'mi mama me mima'.
+	aSentenceStartingWithSime := 'simetrica definida positiva'.
+	anotherSentenceStartingWithSime := 'simetricadefinidapositiva'.
 	
 	aStack push: 'simétrica definida positiva'.
-	aStack push: 'simetrica definida positiva'.
-	aStack push: 'sime trica definida positiva'.
-	aStack push: 'mi mama me mima'.
-	aStack push: 'simetricadefinidapositiva'.
+	aStack push: aSentenceStartingWithSime .
+	aStack push: aRepeatedSentence.
+	aStack push: aRepeatedSentence.
+	aStack push: anotherSentenceStartingWithSime .
 	
 	aSentenceFinderByPrefix := SentenceFinderByPrefix with: aStack .! !
 
@@ -170,14 +173,14 @@ test02APrefixWithSpacesOnFindMethodShouldRaiseError
 
 	self assertThatFindingWithPrefix: 'Paul McCartney' throwsErrorWithMessageText: SentenceFinderByPrefix prefixCannotContainSpacesErrorDescription.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'Jonathan Scherman 4/20/2019 04:04:36'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 15:24:31'!
 test03AnEmptyStackShouldReturnAnEmptyCollection
 	
 	aSentenceFinderByPrefix := SentenceFinderByPrefix with: OOStack new.
 
 	self 
 		assert: aSentenceFinderByPrefix 
-		doesNotFindSentencesWithPrefix: 'paulmccartney'.
+		doesNotFindSentencesWithPrefix: 'nonEmptyPrefix' .
 ! !
 
 !SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'Jonathan Scherman 4/20/2019 03:55:19'!
@@ -188,13 +191,13 @@ test04APrefixThatIsNotInTheStackShouldReturnAnEmptyCollection
 		doesNotFindSentencesWithPrefix: 'paulmccartney'.
 ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'Jonathan Scherman 4/20/2019 03:43:00'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 15:51:51'!
 test05FindShouldReturnAllElementsWithTheGivenPrefix
 	
 	|aCollection theExpectedCollection|
 	
 	aCollection := aSentenceFinderByPrefix find: 'sime'.
-	theExpectedCollection := Bag withAll: #('simetricadefinidapositiva' 'simetrica definida positiva' 'sime trica definida positiva').
+	theExpectedCollection := OrderedCollection with:  aSentenceStartingWithSime with: anotherSentenceStartingWithSime.
 	
 	self assert: aCollection = theExpectedCollection 
 ! !
@@ -206,6 +209,52 @@ test06FindShouldBeCaseSensitive
 		assert: aSentenceFinderByPrefix 
 		doesNotFindSentencesWithPrefix: 'Sime'.! !
 
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 15:51:56'!
+test07FindShouldReturnRepeatedSentecesAsWell
+	
+	| sentencesContainingPrefix expectedSentences |
+	sentencesContainingPrefix := aSentenceFinderByPrefix  find: 'mi'.
+	expectedSentences := OrderedCollection with: aRepeatedSentence with: aRepeatedSentence.
+	
+	self assert: expectedSentences equals: sentencesContainingPrefix .! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:06:21'!
+test08FindShouldPreserveTheStackGivenAPrefixThatIsInASentence
+	
+	|aStack aCopyOfTheStack anotherSentenceFinderByPrefix|
+	aStack := OOStack new.
+	aStack push: aSentenceStartingWithSime.
+	aStack push: anotherSentenceStartingWithSime.
+	
+	aCopyOfTheStack :=  aStack copy.
+	
+	anotherSentenceFinderByPrefix := SentenceFinderByPrefix with: aStack.
+	anotherSentenceFinderByPrefix find: 'sime'.
+	
+	self assert:  aStack containsTheSameAs: aCopyOfTheStack! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'js 4/21/2019 16:10:04'!
+test09FindShouldPreserveTheStackGivenAPrefixThatIsntInASentence
+	
+	|aStack aCopyOfTheStack anotherSentenceFinderByPrefix|
+	aStack := OOStack new.
+	aStack push: aSentenceStartingWithSime.
+	aStack push: aRepeatedSentence.
+	aCopyOfTheStack :=  aStack copy.
+	
+	anotherSentenceFinderByPrefix := SentenceFinderByPrefix with: aStack.
+	anotherSentenceFinderByPrefix find: 'coso'.
+	
+	self assert:  aStack containsTheSameAs: aCopyOfTheStack! !
+
+
+!SentenceFinderByPrefixTest methodsFor: 'asserting' stamp: 'js 4/21/2019 16:05:23'!
+assert: aStack containsTheSameAs: anotherStack
+
+	[aStack isEmpty] whileFalse:
+	[
+		self assert: aStack pop equals: anotherStack pop.
+	].! !
 
 !SentenceFinderByPrefixTest methodsFor: 'asserting' stamp: 'Jonathan Scherman 4/20/2019 03:50:40'!
 assert: asd doesNotFindSentencesWithPrefix: aPrefix
@@ -240,94 +289,94 @@ should: aBlockToRun raise: anExceptionType asserting: aVerificationBlock
 ! !
 
 
-!classDefinition: #OOAbstractStackElement category: #'Stack-Exercise'!
-Object subclass: #OOAbstractStackElement
+!classDefinition: #LinkedListElement category: #'Stack-Exercise'!
+Object subclass: #LinkedListElement
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOAbstractStackElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:24:15'!
+!LinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 14:50:21'!
+countChainSize
+
+	self shouldBeImplemented.! !
+
+!LinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:24:15'!
 previous
 
 	self shouldBeImplemented.! !
 
-!OOAbstractStackElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:24:17'!
-size
-
-	self shouldBeImplemented.! !
-
-!OOAbstractStackElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:24:19'!
+!LinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:24:19'!
 value
 
 	self shouldBeImplemented.! !
 
 
-!OOAbstractStackElement methodsFor: 'inspecting' stamp: 'Jonathan Scherman 4/20/2019 02:23:56'!
+!LinkedListElement methodsFor: 'inspecting' stamp: 'Jonathan Scherman 4/20/2019 02:23:56'!
 isEmpty
 
 	self shouldBeImplemented.! !
 
 
-!classDefinition: #OONullStackElement category: #'Stack-Exercise'!
-OOAbstractStackElement subclass: #OONullStackElement
+!classDefinition: #NullLinkedListElement category: #'Stack-Exercise'!
+LinkedListElement subclass: #NullLinkedListElement
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OONullStackElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:21:16'!
+!NullLinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 14:50:21'!
+countChainSize
+	
+	^0.! !
+
+!NullLinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:21:16'!
 previous
 
 	^OOStack stackEmptyErrorDescription ! !
 
-!OONullStackElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:10:48'!
-size
-	
-	^0.! !
-
-!OONullStackElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:21:20'!
+!NullLinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:21:20'!
 value
 
 	^self error: OOStack stackEmptyErrorDescription ! !
 
 
-!OONullStackElement methodsFor: 'inspecting' stamp: 'Jonathan Scherman 4/20/2019 02:07:53'!
+!NullLinkedListElement methodsFor: 'inspecting' stamp: 'Jonathan Scherman 4/20/2019 02:07:53'!
 isEmpty
 
 	^true.! !
 
 
-!classDefinition: #OOStackElement category: #'Stack-Exercise'!
-OOAbstractStackElement subclass: #OOStackElement
+!classDefinition: #RealLinkedListElement category: #'Stack-Exercise'!
+LinkedListElement subclass: #RealLinkedListElement
 	instanceVariableNames: 'value previous'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStackElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:25:13'!
+!RealLinkedListElement methodsFor: 'functionality' stamp: 'js 4/21/2019 14:50:21'!
+countChainSize
+
+	^1 + previous countChainSize.! !
+
+!RealLinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:25:13'!
 previous
 
 	^previous ! !
 
-!OOStackElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:11:24'!
-size
-
-	^1 + previous size.! !
-
-!OOStackElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:25:22'!
+!RealLinkedListElement methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:25:22'!
 value
 
 	^value! !
 
 
-!OOStackElement methodsFor: 'inspecting' stamp: 'Jonathan Scherman 4/20/2019 02:08:05'!
+!RealLinkedListElement methodsFor: 'inspecting' stamp: 'Jonathan Scherman 4/20/2019 02:08:05'!
 isEmpty
 
 	^false.! !
 
 
-!OOStackElement methodsFor: 'initialization' stamp: 'Jonathan Scherman 4/20/2019 02:13:50'!
+!RealLinkedListElement methodsFor: 'initialization' stamp: 'Jonathan Scherman 4/20/2019 02:13:50'!
 initializeWithValue: aValue previous: aList
 
 	value := aValue.
@@ -335,11 +384,11 @@ initializeWithValue: aValue previous: aList
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'OOStackElement class' category: #'Stack-Exercise'!
-OOStackElement class
+!classDefinition: 'RealLinkedListElement class' category: #'Stack-Exercise'!
+RealLinkedListElement class
 	instanceVariableNames: ''!
 
-!OOStackElement class methodsFor: 'instance creation' stamp: 'Jonathan Scherman 4/20/2019 02:28:46'!
+!RealLinkedListElement class methodsFor: 'instance creation' stamp: 'Jonathan Scherman 4/20/2019 02:28:46'!
 withValue: aValue previous: anElement
 
 	^ self new initializeWithValue: aValue previous: anElement! !
@@ -347,49 +396,49 @@ withValue: aValue previous: anElement
 
 !classDefinition: #OOStack category: #'Stack-Exercise'!
 Object subclass: #OOStack
-	instanceVariableNames: 'lastElement'
+	instanceVariableNames: 'topOfStack'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStack methodsFor: 'inspecting' stamp: 'Jonathan Scherman 4/20/2019 02:08:59'!
+!OOStack methodsFor: 'inspecting' stamp: 'js 4/21/2019 14:38:30'!
 isEmpty
 
-	^lastElement isEmpty.! !
+	^topOfStack isEmpty.! !
 
 
-!OOStack methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:26:10'!
+!OOStack methodsFor: 'functionality' stamp: 'js 4/21/2019 14:20:07'!
 pop
 
 	| poppedElement |
 	
-	poppedElement := lastElement value.
-	lastElement := lastElement previous.
+	poppedElement := topOfStack value.
+	topOfStack := topOfStack previous.
 	^poppedElement! !
 
-!OOStack methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:26:47'!
+!OOStack methodsFor: 'functionality' stamp: 'js 4/21/2019 14:20:13'!
 push: aValue 
 
 	| newElement |
 	
-	newElement := OOStackElement withValue: aValue previous: lastElement.
-	lastElement := newElement! !
+	newElement := RealLinkedListElement withValue: aValue previous: topOfStack.
+	topOfStack := newElement! !
 
-!OOStack methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:26:51'!
+!OOStack methodsFor: 'functionality' stamp: 'js 4/21/2019 15:26:17'!
 size
 
-	^lastElement size! !
+	^topOfStack countChainSize! !
 
-!OOStack methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 02:26:54'!
+!OOStack methodsFor: 'functionality' stamp: 'js 4/21/2019 14:20:21'!
 top
 
-	^lastElement value! !
+	^topOfStack value! !
 
 
-!OOStack methodsFor: 'initialization' stamp: 'Jonathan Scherman 4/20/2019 02:15:11'!
+!OOStack methodsFor: 'initialization' stamp: 'js 4/21/2019 14:20:01'!
 initialize
 
-	lastElement := OONullStackElement new! !
+	topOfStack := NullLinkedListElement new! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -410,57 +459,32 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 03:18:50'!
-add: aSentence to: aCollection ifSatisfies: aBlockCondition
-
-	(aBlockCondition value: aSentence) ifTrue: [aCollection add: aSentence].! !
-
-!SentenceFinderByPrefix methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 03:21:17'!
+!SentenceFinderByPrefix methodsFor: 'functionality' stamp: 'js 4/21/2019 15:52:22'!
 find: aPrefix
 
 	self assertIsValid: aPrefix.
-	^self getSentencesBeginningWith: aPrefix.
-! !
-
-!SentenceFinderByPrefix methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 03:22:50'!
-getSentencesBeginningWith: aPrefix
-
-	|  sentencesBeginningWithPrefix  |.
-	
-	sentencesBeginningWithPrefix := Bag new.
-	
-	^self 
-		select: [:aSentence | aSentence beginsWith: aPrefix] 
-		from: sentences
-		andCollectResultsAt: sentencesBeginningWithPrefix.! !
-
-!SentenceFinderByPrefix methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 03:23:51'!
-initializeWith: aStackOfSentences
-
-	sentences := aStackOfSentences! !
-
-!SentenceFinderByPrefix methodsFor: 'functionality' stamp: 'Jonathan Scherman 4/20/2019 03:19:16'!
-select: aBlockCondition from: aStack andCollectResultsAt: aResultsCollection
-	
-	(aStack isEmpty) ifFalse:
-	[ 
-		| aSentence |.
-		
-		aSentence := aStack pop.
-		self add: aSentence to: aResultsCollection ifSatisfies: aBlockCondition.
-		self select: aBlockCondition from: aStack andCollectResultsAt: aResultsCollection.
-		aStack push: aSentence.
-	].
-
-	^aResultsCollection
+	^sentences select: [:anElement | anElement beginsWith: aPrefix ]
 ! !
 
 
-!SentenceFinderByPrefix methodsFor: 'asserting' stamp: 'Jonathan Scherman 4/20/2019 02:41:48'!
+!SentenceFinderByPrefix methodsFor: 'private - assertion' stamp: 'Jonathan Scherman 4/20/2019 02:41:48'!
 assertIsValid: aPrefix
 
 	(aPrefix isEmpty) ifTrue: [self error: self class prefixCannotBeEmptyErrorDescription ].
 	(aPrefix includesSubString: ' ') ifTrue: [self error: self class prefixCannotContainSpacesErrorDescription ].
+	! !
+
+
+!SentenceFinderByPrefix methodsFor: 'initialization' stamp: 'js 4/21/2019 15:50:46'!
+initializeWith: aStackOfSentences
+
+	sentences := OrderedCollection new.
+	[aStackOfSentences isEmpty ] whileFalse:
+	[
+		sentences addFirst: aStackOfSentences pop.
+	].
+
+	sentences do: [:anElement | aStackOfSentences push: anElement ].
 	! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
