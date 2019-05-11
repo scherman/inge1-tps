@@ -17,7 +17,7 @@ test01DoesNothingWhenThereAreNoCommands
 	self assert: marsRover IsAt: (0@0) pointingTo: 'North'.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:08:01'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/11/2019 14:51:43'!
 test02DoesNotExecuteInvalidCommand
 	
 	|marsRover|
@@ -25,7 +25,7 @@ test02DoesNotExecuteInvalidCommand
 	marsRover := MarsRover at: 0@0 pointingTo: 'North'.
 	
 	self 
-		assertThat: [marsRover execute: 'x'. self fail.] 
+		assert: [marsRover execute: 'x'. self fail.] 
 		failsWithMessage: (MarsRover invalidCommandErrorMessage)
 		thenAssert: [self assert: marsRover IsAt: (0@0) pointingTo: 'North'].
 	! !
@@ -234,7 +234,7 @@ test19ExecutesMultipleCommands
 	
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:07'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/11/2019 14:51:43'!
 test20StopsExecutingWhenEncountersInvalidCommand
 	
 	|marsRover|
@@ -242,7 +242,7 @@ test20StopsExecutingWhenEncountersInvalidCommand
 	marsRover := MarsRover at: 0@0 pointingTo: 'North'.
 
 	self 
-		assertThat: [marsRover execute: 'fxr'. self fail.]
+		assert: [marsRover execute: 'fxr'. self fail.]
 		failsWithMessage: (MarsRover invalidCommandErrorMessage)
 		thenAssert: [self assert: marsRover IsAt: (0@1) pointingTo: 'North'].
 	
@@ -255,8 +255,8 @@ assert: aMarsRover IsAt: aPoint pointingTo: aCardinalPoint
 	self assert: (aMarsRover location = aPoint).
 	self assert: (aMarsRover direction = aCardinalPoint).! !
 
-!MarsRoverTests methodsFor: 'assertions' stamp: 'js 5/10/2019 23:00:51'!
-assertThat: aBlockToExecute failsWithMessage: anErrorMessage thenAssert: anAssertionBlock
+!MarsRoverTests methodsFor: 'assertions' stamp: 'js 5/11/2019 14:51:43'!
+assert: aBlockToExecute failsWithMessage: anErrorMessage thenAssert: anAssertionBlock
 
 	[aBlockToExecute value. self fail.]
 		on: Error
