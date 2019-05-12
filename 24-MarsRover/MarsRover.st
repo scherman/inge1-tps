@@ -5,246 +5,246 @@ TestCase subclass: #MarsRoverTests
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:08:08'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:36:19'!
 test01DoesNothingWhenThereAreNoCommands
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'North'.
+	marsRover := MarsRover at: 0@0 pointingTo: #North.
 	
 	marsRover execute: ''.
 	
-	self assert: marsRover IsAt: (0@0) pointingTo: 'North'.
+	self assert: marsRover IsAt: (0@0) pointingTo: #North.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:08:01'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:36:30'!
 test02DoesNotExecuteInvalidCommand
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'North'.
+	marsRover := MarsRover at: 0@0 pointingTo: #North.
 	
 	self 
 		assertThat: [marsRover execute: 'x'. self fail.] 
 		failsWithMessage: (MarsRover invalidCommandErrorMessage)
-		thenAssert: [self assert: marsRover IsAt: (0@0) pointingTo: 'North'].
+		thenAssert: [self assert: marsRover IsAt: (0@0) pointingTo: #North].
 	! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:07:56'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:36:40'!
 test03MovesUpWhenPointingNorthAndGoesForward
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'North'.
+	marsRover := MarsRover at: 0@0 pointingTo: #North.
 	
 	marsRover execute: 'f'.
 	
-	self assert: marsRover IsAt: (0@1) pointingTo: 'North'.
+	self assert: marsRover IsAt: (0@1) pointingTo: #North.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:07:50'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:36:48'!
 test04MovesDownWhenPointingNorthAndGoesBackwards
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'North'.
+	marsRover := MarsRover at: 0@0 pointingTo: #North.
 	
 	marsRover execute: 'b'.
 	
-	self assert: marsRover IsAt: (0@-1) pointingTo: 'North'.
+	self assert: marsRover IsAt: (0@-1) pointingTo: #North.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:07:44'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:37:10'!
 test05PointsEastWhenPointingNorthAndTurnsRight
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'North'.
+	marsRover := MarsRover at: 0@0 pointingTo: #North.
 	
 	marsRover execute: 'r'.
 	
-	self assert: marsRover IsAt: (0@0) pointingTo: 'East'.
+	self assert: marsRover IsAt: (0@0) pointingTo: #East.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:07:25'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:37:21'!
 test06PointsWestWhenPointingNorthAndTurnsLeft
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'North'.
+	marsRover := MarsRover at: 0@0 pointingTo: #North.
 	
 	marsRover execute: 'l'.
 	
-	self assert: marsRover IsAt: (0@0) pointingTo: 'West'.! !
+	self assert: marsRover IsAt: (0@0) pointingTo: #West.! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:07:20'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:37:35'!
 test07MovesRightWhenPointingEastAndGoesForward
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'East'.
+	marsRover := MarsRover at: 0@0 pointingTo: #East.
 	
 	marsRover execute: 'f'.
 	
-	self assert: marsRover IsAt: (1@0) pointingTo: 'East'.
+	self assert: marsRover IsAt: (1@0) pointingTo: #East.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:07:12'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:37:44'!
 test08MovesLeftWhenPointingEastAndGoesBackwards
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'East'.
+	marsRover := MarsRover at: 0@0 pointingTo: #East.
 	
 	marsRover execute: 'b'.
 	
-	self assert: marsRover IsAt: (-1@0) pointingTo: 'East'.
+	self assert: marsRover IsAt: (-1@0) pointingTo: #East.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:07:07'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:37:57'!
 test09PointsSouthWhenPointingEastAndTurnsRight
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'East'.
+	marsRover := MarsRover at: 0@0 pointingTo: #East.
 	
 	marsRover execute: 'r'.
 	
-	self assert: marsRover IsAt: (0@0) pointingTo: 'South'.
+	self assert: marsRover IsAt: (0@0) pointingTo: #South.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:58'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:38:10'!
 test10PointsNorthWhenPointingEastAndTurnsLeft
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'East'.
+	marsRover := MarsRover at: 0@0 pointingTo: #East.
 	
 	marsRover execute: 'l'.
 	
-	self assert: marsRover IsAt: (0@0) pointingTo: 'North'.
+	self assert: marsRover IsAt: (0@0) pointingTo:#North.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:53'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:38:17'!
 test11MovesDownWhenPointingSouthAndGoesForward
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'South'.
+	marsRover := MarsRover at: 0@0 pointingTo: #South.
 	
 	marsRover execute: 'f'.
 	
-	self assert: marsRover IsAt: (0@-1) pointingTo: 'South'.
+	self assert: marsRover IsAt: (0@-1) pointingTo: #South.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:46'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:38:28'!
 test12MovesUpWhenPointingSouthAndGoesBackwards
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'South'.
+	marsRover := MarsRover at: 0@0 pointingTo: #South.
 	
 	marsRover execute: 'b'.
 	
-	self assert: marsRover IsAt: (0@1) pointingTo: 'South'.
+	self assert: marsRover IsAt: (0@1) pointingTo: #South.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:39'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:38:40'!
 test13PointsWestWhenPointingSouthAndTurnsRight
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'South'.
+	marsRover := MarsRover at: 0@0 pointingTo: #South.
 	
 	marsRover execute: 'r'.
 	
-	self assert: marsRover IsAt: (0@0) pointingTo: 'West'.
+	self assert: marsRover IsAt: (0@0) pointingTo: #West.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:34'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:38:50'!
 test14PointsEastWhenPointingSouthAndTurnsLeft
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'South'.
+	marsRover := MarsRover at: 0@0 pointingTo: #South.
 	
 	marsRover execute: 'l'.
 	
-	self assert: marsRover IsAt: (0@0) pointingTo: 'East'.
+	self assert: marsRover IsAt: (0@0) pointingTo: #East.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:29'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:39:00'!
 test15MovesLeftWhenPointingWestAndGoesForward
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'West'.
+	marsRover := MarsRover at: 0@0 pointingTo: #West.
 	
 	marsRover execute: 'f'.
 	
-	self assert: marsRover IsAt: (-1@0) pointingTo: 'West'.
+	self assert: marsRover IsAt: (-1@0) pointingTo: #West.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:24'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:39:09'!
 test16MovesRightWhenPointingWestAndGoesBackwards
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'West'.
+	marsRover := MarsRover at: 0@0 pointingTo: #West.
 	
 	marsRover execute: 'b'.
 	
-	self assert: marsRover IsAt: (1@0) pointingTo: 'West'.
+	self assert: marsRover IsAt: (1@0) pointingTo: #West.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:19'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:39:20'!
 test17PointsNorthWhenPointingWestAndTurnsRight
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'West'.
+	marsRover := MarsRover at: 0@0 pointingTo: #West.
 	
 	marsRover execute: 'r'.
 	
-	self assert: marsRover IsAt: (0@0) pointingTo: 'North'.
+	self assert: marsRover IsAt: (0@0) pointingTo: #North.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:13'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:39:34'!
 test18PointsSouthWhenPointingWestAndTurnsLeft
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'West'.
+	marsRover := MarsRover at: 0@0 pointingTo: #West.
 	
 	marsRover execute: 'l'.
 	
-	self assert: marsRover IsAt: (0@0) pointingTo: 'South'.
+	self assert: marsRover IsAt: (0@0) pointingTo: #South.
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:05:31'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:39:51'!
 test19ExecutesMultipleCommands
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'North'.
+	marsRover := MarsRover at: 0@0 pointingTo: #North.
 
 	marsRover execute: 'frf'.
 	
-	self assert: marsRover IsAt: (1@1) pointingTo: 'East'.
+	self assert: marsRover IsAt: (1@1) pointingTo: #East.
 	
 	 ! !
 
-!MarsRoverTests methodsFor: 'tests' stamp: 'js 5/10/2019 23:06:07'!
+!MarsRoverTests methodsFor: 'tests' stamp: 'J.S 5/12/2019 15:40:03'!
 test20StopsExecutingWhenEncountersInvalidCommand
 	
 	|marsRover|
 
-	marsRover := MarsRover at: 0@0 pointingTo: 'North'.
+	marsRover := MarsRover at: 0@0 pointingTo: #North.
 
 	self 
 		assertThat: [marsRover execute: 'fxr'. self fail.]
 		failsWithMessage: (MarsRover invalidCommandErrorMessage)
-		thenAssert: [self assert: marsRover IsAt: (0@1) pointingTo: 'North'].
+		thenAssert: [self assert: marsRover IsAt: (0@1) pointingTo: #North].
 	
 	 ! !
 
@@ -448,10 +448,10 @@ DirectionState subclass: #PointingEast
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!PointingEast methodsFor: 'getters' stamp: 'js 5/10/2019 21:05:35'!
+!PointingEast methodsFor: 'getters' stamp: 'J.S 5/12/2019 15:35:37'!
 direction
 
-	^ 'East'.! !
+	^ #East.! !
 
 
 !PointingEast methodsFor: 'actions' stamp: 'js 5/10/2019 21:24:07'!
@@ -493,10 +493,10 @@ DirectionState subclass: #PointingNorth
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!PointingNorth methodsFor: 'getters' stamp: 'js 5/10/2019 20:33:41'!
+!PointingNorth methodsFor: 'getters' stamp: 'J.S 5/12/2019 15:35:47'!
 direction
 
-	^ 'North'.! !
+	^ #North.! !
 
 
 !PointingNorth methodsFor: 'actions' stamp: 'js 5/10/2019 20:51:38'!
@@ -538,10 +538,10 @@ DirectionState subclass: #PointingSouth
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!PointingSouth methodsFor: 'getters' stamp: 'js 5/10/2019 21:27:50'!
+!PointingSouth methodsFor: 'getters' stamp: 'J.S 5/12/2019 15:35:55'!
 direction
 
-	^ 'South'.! !
+	^ #South.! !
 
 
 !PointingSouth methodsFor: 'actions' stamp: 'js 5/10/2019 21:30:58'!
@@ -583,10 +583,10 @@ DirectionState subclass: #PointingWest
 	poolDictionaries: ''
 	category: 'MarsRover'!
 
-!PointingWest methodsFor: 'getters' stamp: 'js 5/10/2019 21:08:21'!
+!PointingWest methodsFor: 'getters' stamp: 'J.S 5/12/2019 15:36:02'!
 direction
 
-	^ 'West'.! !
+	^ #West.! !
 
 
 !PointingWest methodsFor: 'actions' stamp: 'js 5/10/2019 21:35:17'!
@@ -661,27 +661,27 @@ location
 	^ location.! !
 
 
-!MarsRover methodsFor: 'internal' stamp: 'js 5/10/2019 20:52:09'!
+!MarsRover methodsFor: 'private' stamp: 'js 5/10/2019 20:52:09'!
 moveDown
 
 	location := (location x)@(location y - 1).! !
 
-!MarsRover methodsFor: 'internal' stamp: 'js 5/10/2019 21:24:28'!
+!MarsRover methodsFor: 'private' stamp: 'js 5/10/2019 21:24:28'!
 moveLeft
 
 	location := (location x - 1)@(location y).! !
 
-!MarsRover methodsFor: 'internal' stamp: 'js 5/10/2019 21:23:03'!
+!MarsRover methodsFor: 'private' stamp: 'js 5/10/2019 21:23:03'!
 moveRight
 
 	location := (location x + 1)@(location y).! !
 
-!MarsRover methodsFor: 'internal' stamp: 'js 5/10/2019 20:45:25'!
+!MarsRover methodsFor: 'private' stamp: 'js 5/10/2019 20:45:25'!
 moveUp
 
 	location := (location x)@(location y + 1).! !
 
-!MarsRover methodsFor: 'internal' stamp: 'js 5/10/2019 20:56:37'!
+!MarsRover methodsFor: 'private' stamp: 'js 5/10/2019 20:56:37'!
 pointTo: aCardinalPoint 
 	
 	directionState := (DirectionState subclasses 
