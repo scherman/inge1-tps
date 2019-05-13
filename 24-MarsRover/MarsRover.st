@@ -464,15 +464,15 @@ moveForward
 
 	marsRover moveRight.! !
 
-!PointingEast methodsFor: 'actions' stamp: 'js 5/10/2019 21:29:01'!
+!PointingEast methodsFor: 'actions' stamp: 'J.S 5/13/2019 10:40:48'!
 rotateLeft
 
-	marsRover pointTo: 'North'.! !
+	marsRover pointTo: #North.! !
 
-!PointingEast methodsFor: 'actions' stamp: 'js 5/10/2019 21:26:47'!
+!PointingEast methodsFor: 'actions' stamp: 'J.S 5/13/2019 10:40:54'!
 rotateRight
 
-	marsRover pointTo: 'South'.! !
+	marsRover pointTo: #South.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -509,15 +509,15 @@ moveForward
 
 	marsRover moveUp.! !
 
-!PointingNorth methodsFor: 'actions' stamp: 'js 5/10/2019 21:07:20'!
+!PointingNorth methodsFor: 'actions' stamp: 'J.S 5/13/2019 10:41:00'!
 rotateLeft
 
-	marsRover pointTo: 'West'.! !
+	marsRover pointTo: #West.! !
 
-!PointingNorth methodsFor: 'actions' stamp: 'js 5/10/2019 20:55:10'!
+!PointingNorth methodsFor: 'actions' stamp: 'J.S 5/13/2019 10:41:06'!
 rotateRight
 
-	marsRover pointTo: 'East'.! !
+	marsRover pointTo: #East.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -554,15 +554,15 @@ moveForward
 
 	marsRover moveDown.! !
 
-!PointingSouth methodsFor: 'actions' stamp: 'js 5/10/2019 21:33:29'!
+!PointingSouth methodsFor: 'actions' stamp: 'J.S 5/13/2019 10:41:12'!
 rotateLeft
 
-	marsRover pointTo: 'East'.! !
+	marsRover pointTo: #East.! !
 
-!PointingSouth methodsFor: 'actions' stamp: 'js 5/10/2019 21:32:26'!
+!PointingSouth methodsFor: 'actions' stamp: 'J.S 5/13/2019 10:41:17'!
 rotateRight
 
-	marsRover pointTo: 'West'.! !
+	marsRover pointTo: #West.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -599,15 +599,15 @@ moveForward
 
 	marsRover moveLeft.! !
 
-!PointingWest methodsFor: 'actions' stamp: 'js 5/10/2019 21:38:00'!
+!PointingWest methodsFor: 'actions' stamp: 'J.S 5/13/2019 10:41:25'!
 rotateLeft
 
-	marsRover pointTo: 'South'.! !
+	marsRover pointTo: #South.! !
 
-!PointingWest methodsFor: 'actions' stamp: 'js 5/10/2019 21:36:54'!
+!PointingWest methodsFor: 'actions' stamp: 'J.S 5/13/2019 10:41:31'!
 rotateRight
 
-	marsRover pointTo: 'North'.! !
+	marsRover pointTo: #North.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
