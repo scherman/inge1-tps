@@ -136,18 +136,6 @@ wait
 	(Delay forSeconds: 1) wait.
 ! !
 
-
-!IntegerReport methodsFor: 'schedule' stamp: 'J.S 5/18/2019 22:48:21'!
-runInParallel: aBlockToExecute
-	
-	| aSemaphoreForBlock |
-	aSemaphoreForBlock := Semaphore new.
-	
-	[ aBlockToExecute value. aSemaphoreForBlock signal] fork.
-	
-	^aSemaphoreForBlock.
-! !
-
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'IntegerReport class' category: #'Ingsoft-IntegerReports'!
@@ -167,18 +155,17 @@ IntegerReport subclass: #CombinedIntegerPropertiesReport
 	poolDictionaries: ''
 	category: 'Ingsoft-IntegerReports'!
 
-!CombinedIntegerPropertiesReport methodsFor: 'reporting' stamp: 'J.S 5/18/2019 22:49:53'!
+!CombinedIntegerPropertiesReport methodsFor: 'reporting' stamp: 'J.S 5/19/2019 22:11:36'!
 value
 
-	| basicPropertiesLines complexPropertiesLines lines basicPropertiesLinesSemaphore complexPropertiesLinesSemaphore |
+	| basicPropertiesLines complexPropertiesLines lines |
 	
 	lines := OrderedCollection new.
 	
-	basicPropertiesLinesSemaphore := self runInParallel: [ basicPropertiesLines := (BasicIntegerPropertiesReport for: integerToAnalize) value].
-	complexPropertiesLinesSemaphore := self runInParallel: [ complexPropertiesLines := (ComplexIntegerPropertiesReport for: integerToAnalize) value].
-	
-	basicPropertiesLinesSemaphore wait.
-	complexPropertiesLinesSemaphore wait.
+	(ParallelIntegerReportsProxy 
+		of: BasicIntegerPropertiesReport doWithResult: [:aResult | basicPropertiesLines := aResult] 
+		of: ComplexIntegerPropertiesReport doWithResult: [:aResult | complexPropertiesLines := aResult]
+		for: integerToAnalize) value.
 
 	lines 
 		addAll: basicPropertiesLines;
@@ -194,26 +181,23 @@ IntegerReport subclass: #CompleteIntegerReport
 	poolDictionaries: ''
 	category: 'Ingsoft-IntegerReports'!
 
-!CompleteIntegerReport methodsFor: 'reporting' stamp: 'J.S 5/18/2019 22:52:10'!
+!CompleteIntegerReport methodsFor: 'reporting' stamp: 'J.S 5/19/2019 22:37:51'!
 value
 
-	| combinedPropertiesLines differentBasesLines lines combinedPropertiesLinesSemaphore differentBasesLinesSemaphore |
+	| combinedPropertiesLines differentBasesLines lines |
 	
 	lines := OrderedCollection new.	
 	
-	combinedPropertiesLinesSemaphore := self runInParallel: [ combinedPropertiesLines := (CombinedIntegerPropertiesReport for: integerToAnalize) value].
-	differentBasesLinesSemaphore := self runInParallel: [ differentBasesLines := (IntegerOnDifferentBasesReport for: integerToAnalize) value].
-	
-	combinedPropertiesLinesSemaphore wait.
-	differentBasesLinesSemaphore wait.
-
+	(ParallelIntegerReportsProxy 
+		of: CombinedIntegerPropertiesReport doWithResult: [:aResult | combinedPropertiesLines := aResult] 
+		of: IntegerOnDifferentBasesReport doWithResult: [:aResult | differentBasesLines := aResult]
+		for: integerToAnalize) value.
 	
 	lines
 		addAll: combinedPropertiesLines;
 		addAll: differentBasesLines.
 		
 	^lines! !
-
 
 
 !classDefinition: #IntegerOnDifferentBasesReport category: #'Ingsoft-IntegerReports'!
@@ -302,3 +286,63 @@ value
 		addLineTo: lines title: 'Sqrt' with: [ integerToAnalize sqrt ].
 		
 	^lines! !
+
+
+!classDefinition: #ParallelIntegerReportsProxy category: #'Ingsoft-IntegerReports'!
+IntegerReport subclass: #ParallelIntegerReportsProxy
+	instanceVariableNames: 'integerReportA integerReportB doWithResultB doWithResultA'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Ingsoft-IntegerReports'!
+
+!ParallelIntegerReportsProxy methodsFor: 'initialization' stamp: 'J.S 5/19/2019 22:10:25'!
+initializeOf: anIntegerReportA doWithResult: aBlockToExecuteWithResultA of: anIntegerReportB doWithResult: aBlockToExecuteWithResultB for: anIntegerToAnalyze.
+
+	integerReportA := anIntegerReportA.
+	doWithResultA := aBlockToExecuteWithResultA.
+	integerReportB := anIntegerReportB.
+	doWithResultB := aBlockToExecuteWithResultB.
+	self initializeFor: anIntegerToAnalyze.! !
+
+
+!ParallelIntegerReportsProxy methodsFor: 'reporting' stamp: 'J.S 5/19/2019 22:34:13'!
+value
+
+	| anIntegerReportASemaphore anIntegerReportBSemaphore |
+	
+	anIntegerReportASemaphore := self runInParallel: integerReportA doWithResult: doWithResultA.
+	anIntegerReportBSemaphore := self runInParallel: integerReportB doWithResult: doWithResultB.
+	
+	anIntegerReportASemaphore wait.
+	anIntegerReportBSemaphore wait.
+! !
+
+
+!ParallelIntegerReportsProxy methodsFor: 'schedule' stamp: 'J.S 5/19/2019 22:16:27'!
+runInParallel: aBlockToExecute
+	
+	| aSemaphoreForBlock |
+	aSemaphoreForBlock := Semaphore new.
+	
+	[ aBlockToExecute value. aSemaphoreForBlock signal] fork.
+	
+	^aSemaphoreForBlock.! !
+
+!ParallelIntegerReportsProxy methodsFor: 'schedule' stamp: 'J.S 5/19/2019 22:35:43'!
+runInParallel: anIntegerReport doWithResult: aBlockToExecuteWithResult
+
+	^self runInParallel: [ aBlockToExecuteWithResult value: (anIntegerReport for: integerToAnalize) value].! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'ParallelIntegerReportsProxy class' category: #'Ingsoft-IntegerReports'!
+ParallelIntegerReportsProxy class
+	instanceVariableNames: ''!
+
+!ParallelIntegerReportsProxy class methodsFor: 'initialization' stamp: 'J.S 5/19/2019 22:39:48'!
+of: anIntegerReportA doWithResult: aBlockToExecuteWithResultA of: anIntegerReportB doWithResult: aBlockToExecuteWithResultB for: anIntegerToAnalyze.
+
+	^self new 
+		initializeOf: anIntegerReportA doWithResult: aBlockToExecuteWithResultA
+		of: anIntegerReportB doWithResult: aBlockToExecuteWithResultB 
+		for: anIntegerToAnalyze.! !
