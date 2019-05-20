@@ -136,6 +136,7 @@ wait
 	(Delay forSeconds: 1) wait.
 ! !
 
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'IntegerReport class' category: #'Ingsoft-IntegerReports'!
