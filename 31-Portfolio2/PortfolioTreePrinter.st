@@ -1,9 +1,9 @@
-!classDefinition: #PortfolioTest category: #'Portfolio-Solucion'!
+!classDefinition: #PortfolioTest category: #PortfolioTreePrinter!
 TestCase subclass: #PortfolioTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !PortfolioTest methodsFor: 'tests' stamp: 'HAW 5/25/2019 11:16:26'!
 test01BalanceOfPortfolioWithoutAccountsIsZero
@@ -214,12 +214,12 @@ test15PortfolioCanNotIncludeAnyOfTheComposedAccountOfPortfolioToAdd
 			self assert: portfolioToModify accountsIsEmpty ]! !
 
 
-!classDefinition: #ReceptiveAccountTest category: #'Portfolio-Solucion'!
+!classDefinition: #ReceptiveAccountTest category: #PortfolioTreePrinter!
 TestCase subclass: #ReceptiveAccountTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !ReceptiveAccountTest methodsFor: 'tests' stamp: 'HAW 5/23/2019 15:19:48'!
 test01ReceptiveAccountHaveZeroAsBalanceWhenCreated 
@@ -305,20 +305,20 @@ test07AccountKnowsItsTransactions
 ! !
 
 
-!classDefinition: #ReporterTest category: #'Portfolio-Solucion'!
+!classDefinition: #ReporterTest category: #PortfolioTreePrinter!
 TestCase subclass: #ReporterTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 
-!classDefinition: #AccountSummaryReporterTests category: #'Portfolio-Solucion'!
+!classDefinition: #AccountSummaryReporterTests category: #PortfolioTreePrinter!
 ReporterTest subclass: #AccountSummaryReporterTests
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !AccountSummaryReporterTests methodsFor: 'tests' stamp: 'js 6/3/2019 01:19:38'!
 test01ReportOfEmptyTransactionsIsCorrect
@@ -460,12 +460,12 @@ test09ReportOfPortfolioParentOfBothIsCorrect
 	! !
 
 
-!classDefinition: #SpecialSummaryReporterTests category: #'Portfolio-Solucion'!
+!classDefinition: #SpecialSummaryReporterTests category: #PortfolioTreePrinter!
 ReporterTest subclass: #SpecialSummaryReporterTests
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !SpecialSummaryReporterTests methodsFor: 'tests' stamp: 'js 6/3/2019 01:37:21'!
 test01ReportOfEmptyTransactionsIsCorrect
@@ -625,12 +625,12 @@ test08ReportOfPortfolioParentOfPortfolioIsCorrect
 	! !
 
 
-!classDefinition: #TransferNetReporterTests category: #'Portfolio-Solucion'!
+!classDefinition: #TransferNetReporterTests category: #PortfolioTreePrinter!
 ReporterTest subclass: #TransferNetReporterTests
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !TransferNetReporterTests methodsFor: 'tests' stamp: 'js 6/3/2019 01:28:38'!
 test01EmptyTransactionsReports0NetValue
@@ -749,12 +749,12 @@ test08ReportOfPortfolioParentOfPortfolioIsCorrect
 	self assert: (report  = 'Valor neto transferencias: -50. ').! !
 
 
-!classDefinition: #TreeSummaryReporterTests category: #'Portfolio-Solucion'!
+!classDefinition: #TreeSummaryReporterTests category: #PortfolioTreePrinter!
 ReporterTest subclass: #TreeSummaryReporterTests
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !TreeSummaryReporterTests methodsFor: 'tests' stamp: 'js 6/3/2019 01:50:52'!
 test01ReportOfEmptyTransactionsIsCorrect
@@ -823,12 +823,12 @@ test04ReportOfPortfolioParentOfPortfolioIsCorrect
 	! !
 
 
-!classDefinition: #TransferTest category: #'Portfolio-Solucion'!
+!classDefinition: #TransferTest category: #PortfolioTreePrinter!
 TestCase subclass: #TransferTest
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !TransferTest methodsFor: 'setUp' stamp: 'J.S 6/2/2019 15:31:17'!
 setUp
@@ -898,12 +898,12 @@ test04CannotTransferToSameAccount
 	! !
 
 
-!classDefinition: #Account category: #'Portfolio-Solucion'!
+!classDefinition: #Account category: #PortfolioTreePrinter!
 Object subclass: #Account
 	instanceVariableNames: 'name'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !Account methodsFor: 'testing' stamp: 'HAW 5/25/2019 12:23:47'!
 hasRegistered: aTransaction
@@ -955,12 +955,12 @@ name
 	^name! !
 
 
-!classDefinition: #Portfolio category: #'Portfolio-Solucion'!
+!classDefinition: #Portfolio category: #PortfolioTreePrinter!
 Account subclass: #Portfolio
 	instanceVariableNames: 'accounts parents'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !Portfolio methodsFor: 'accounts management' stamp: 'HAW 5/25/2019 11:49:20'!
 accountsIncludes: anAccount
@@ -1087,7 +1087,7 @@ accounts
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Portfolio class' category: #'Portfolio-Solucion'!
+!classDefinition: 'Portfolio class' category: #PortfolioTreePrinter!
 Portfolio class
 	instanceVariableNames: ''!
 
@@ -1128,12 +1128,12 @@ canNotAddAccountErrorMessage
 	^'Can not add repeated account to a portfolio'! !
 
 
-!classDefinition: #ReceptiveAccount category: #'Portfolio-Solucion'!
+!classDefinition: #ReceptiveAccount category: #PortfolioTreePrinter!
 Account subclass: #ReceptiveAccount
 	instanceVariableNames: 'transactions'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !ReceptiveAccount methodsFor: 'initialization' stamp: 'HernanWilkinson 7/13/2011 18:35'!
 initialize
@@ -1198,7 +1198,7 @@ generateReport: aReporter
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'ReceptiveAccount class' category: #'Portfolio-Solucion'!
+!classDefinition: 'ReceptiveAccount class' category: #PortfolioTreePrinter!
 ReceptiveAccount class
 	instanceVariableNames: ''!
 
@@ -1209,12 +1209,12 @@ named: aName
 ! !
 
 
-!classDefinition: #AccountTransaction category: #'Portfolio-Solucion'!
+!classDefinition: #AccountTransaction category: #PortfolioTreePrinter!
 Object subclass: #AccountTransaction
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !AccountTransaction methodsFor: 'value' stamp: 'HernanWilkinson 9/12/2011 12:25'!
 value 
@@ -1234,12 +1234,12 @@ accept: aReporter
 	^ aReporter reportWithdrawByTransfer: self. ! !
 
 
-!classDefinition: #RegularTransaction category: #'Portfolio-Solucion'!
+!classDefinition: #RegularTransaction category: #PortfolioTreePrinter!
 AccountTransaction subclass: #RegularTransaction
 	instanceVariableNames: 'value'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !RegularTransaction methodsFor: 'initialization' stamp: 'js 6/2/2019 22:41:24'!
 initializeFor: aValue
@@ -1254,7 +1254,7 @@ value
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'RegularTransaction class' category: #'Portfolio-Solucion'!
+!classDefinition: 'RegularTransaction class' category: #PortfolioTreePrinter!
 RegularTransaction class
 	instanceVariableNames: ''!
 
@@ -1274,12 +1274,12 @@ register: aValue on: account
 	^ withdraw! !
 
 
-!classDefinition: #Deposit category: #'Portfolio-Solucion'!
+!classDefinition: #Deposit category: #PortfolioTreePrinter!
 RegularTransaction subclass: #Deposit
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !Deposit methodsFor: 'balance' stamp: 'HAW 5/25/2019 11:25:02'!
 affectBalance: aBalance
@@ -1293,12 +1293,12 @@ accept: aReporter
 	^ aReporter reportDeposit: self.! !
 
 
-!classDefinition: #Withdraw category: #'Portfolio-Solucion'!
+!classDefinition: #Withdraw category: #PortfolioTreePrinter!
 RegularTransaction subclass: #Withdraw
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !Withdraw methodsFor: 'balance' stamp: 'HAW 5/25/2019 11:25:15'!
 affectBalance: aBalance
@@ -1312,12 +1312,12 @@ accept: aReporter
 	^ aReporter reportWithdraw: self.! !
 
 
-!classDefinition: #TransactionByTransfer category: #'Portfolio-Solucion'!
+!classDefinition: #TransactionByTransfer category: #PortfolioTreePrinter!
 AccountTransaction subclass: #TransactionByTransfer
 	instanceVariableNames: 'transfer'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !TransactionByTransfer methodsFor: 'getters' stamp: 'J.S 6/2/2019 18:04:06'!
 transfer
@@ -1344,7 +1344,7 @@ value
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'TransactionByTransfer class' category: #'Portfolio-Solucion'!
+!classDefinition: 'TransactionByTransfer class' category: #PortfolioTreePrinter!
 TransactionByTransfer class
 	instanceVariableNames: ''!
 
@@ -1354,12 +1354,12 @@ of: aTransfer
 	^ self new initializeWith: aTransfer.! !
 
 
-!classDefinition: #DepositByTransfer category: #'Portfolio-Solucion'!
+!classDefinition: #DepositByTransfer category: #PortfolioTreePrinter!
 TransactionByTransfer subclass: #DepositByTransfer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !DepositByTransfer methodsFor: 'balance' stamp: 'J.S 6/2/2019 16:21:06'!
 affectBalance: aBalance
@@ -1374,17 +1374,17 @@ accept: aReporter
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'DepositByTransfer class' category: #'Portfolio-Solucion'!
+!classDefinition: 'DepositByTransfer class' category: #PortfolioTreePrinter!
 DepositByTransfer class
 	instanceVariableNames: 'transfer'!
 
 
-!classDefinition: #WithdrawByTransfer category: #'Portfolio-Solucion'!
+!classDefinition: #WithdrawByTransfer category: #PortfolioTreePrinter!
 TransactionByTransfer subclass: #WithdrawByTransfer
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !WithdrawByTransfer methodsFor: 'balance' stamp: 'J.S 6/2/2019 16:22:02'!
 affectBalance: aBalance 
@@ -1398,17 +1398,17 @@ accept: aReporter
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'WithdrawByTransfer class' category: #'Portfolio-Solucion'!
+!classDefinition: 'WithdrawByTransfer class' category: #PortfolioTreePrinter!
 WithdrawByTransfer class
 	instanceVariableNames: 'transfer'!
 
 
-!classDefinition: #Reporter category: #'Portfolio-Solucion'!
+!classDefinition: #Reporter category: #PortfolioTreePrinter!
 Object subclass: #Reporter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !Reporter methodsFor: 'reporting' stamp: 'js 6/2/2019 22:31:49'!
 reportDeposit: aDeposit
@@ -1453,12 +1453,12 @@ generateIndentationWith: aNumberOfIndents
 		aNumberOfIndents timesRepeat: [result nextPutAll: ' ']].! !
 
 
-!classDefinition: #AccountSummaryReporter category: #'Portfolio-Solucion'!
+!classDefinition: #AccountSummaryReporter category: #PortfolioTreePrinter!
 Reporter subclass: #AccountSummaryReporter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !AccountSummaryReporter methodsFor: 'reporting' stamp: 'js 6/2/2019 23:37:24'!
 reportAccount: anAccount
@@ -1501,12 +1501,12 @@ reportWithdrawByTransfer: aWithdrawByTransfer
 	^ 'Salida por transferencia de ', aWithdrawByTransfer value asString, '. '.! !
 
 
-!classDefinition: #SpecialSummaryReporter category: #'Portfolio-Solucion'!
+!classDefinition: #SpecialSummaryReporter category: #PortfolioTreePrinter!
 Reporter subclass: #SpecialSummaryReporter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !SpecialSummaryReporter methodsFor: 'reporting' stamp: 'js 6/3/2019 00:21:52'!
 reportDeposit: aDeposit
@@ -1582,12 +1582,12 @@ reportWithdrawByTransfer: aWithdrawByTransfer
 	^ 'Salida por transferencia de ', aWithdrawByTransfer value asString.! !
 
 
-!classDefinition: #TransferNetReporter category: #'Portfolio-Solucion'!
+!classDefinition: #TransferNetReporter category: #PortfolioTreePrinter!
 Reporter subclass: #TransferNetReporter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !TransferNetReporter methodsFor: 'reporting' stamp: 'J.S 6/2/2019 22:28:03'!
 reportAccount: anAccount
@@ -1635,12 +1635,12 @@ reportWithdrawByTransfer: aWithdrawByTransfer
 	^ aWithdrawByTransfer value negated. ! !
 
 
-!classDefinition: #TreeSummaryReporter category: #'Portfolio-Solucion'!
+!classDefinition: #TreeSummaryReporter category: #PortfolioTreePrinter!
 Reporter subclass: #TreeSummaryReporter
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !TreeSummaryReporter methodsFor: 'reporting' stamp: 'js 6/3/2019 01:51:35'!
 reportDeposit: aDeposit
@@ -1700,12 +1700,12 @@ reportWithdrawByTransfer: aWithdrawByTransfer
 	^ ''! !
 
 
-!classDefinition: #Transfer category: #'Portfolio-Solucion'!
+!classDefinition: #Transfer category: #PortfolioTreePrinter!
 Object subclass: #Transfer
 	instanceVariableNames: 'value'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'Portfolio-Solucion'!
+	category: 'PortfolioTreePrinter'!
 
 !Transfer methodsFor: 'initialization' stamp: 'J.S 6/2/2019 16:00:13'!
 initializeFor: aValue
@@ -1730,7 +1730,7 @@ value
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'Transfer class' category: #'Portfolio-Solucion'!
+!classDefinition: 'Transfer class' category: #PortfolioTreePrinter!
 Transfer class
 	instanceVariableNames: ''!
 
