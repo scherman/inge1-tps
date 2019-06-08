@@ -120,20 +120,24 @@ TestCase subclass: #CashierTest
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!CashierTest methodsFor: 'setUp/tearDown' stamp: 'J.S 6/8/2019 15:35:03'!
-setUp! !
+!CashierTest methodsFor: 'setUp/tearDown' stamp: 'J.S 6/8/2019 18:10:52'!
+setUp
+	book := 'el secreto de sus ojos'.
+	pricelist := OrderedCollection with: book.
+	cart := Cart acceptingItemsOf: pricelist ! !
 
 
-!CashierTest methodsFor: 'testing' stamp: 'J.S 6/8/2019 15:55:21'!
+!CashierTest methodsFor: 'testing' stamp: 'J.S 6/8/2019 18:08:43'!
 test01CheckoutOfAnEmptyCartShouldRaiseException
 	
 	cashier := Cashier for: cart with: creditCard.
 	
-	self should: [cashier checkout] raise: Error - MessageNotUnderstood  withMessageText: Cashier cannotCheckoutEmptyCartException! !
+	self should: [cashier checkout] raise: Error - MessageNotUnderstood  withMessageText: Cart cannotCheckoutEmptyCartException ! !
 
-!CashierTest methodsFor: 'testing' stamp: 'J.S 6/8/2019 16:08:53'!
+!CashierTest methodsFor: 'testing' stamp: 'J.S 6/8/2019 18:09:45'!
 test02CheckoutOfACartWithExpiredCreditCardRaisesAnException
 	
+	cart add: book.
 	cashier := Cashier for: cart with: creditCard.
 	
 	self should: [cashier checkout] raise: Error - MessageNotUnderstood  withMessageText: Cashier invalidCreditCardException! !
@@ -141,7 +145,7 @@ test02CheckoutOfACartWithExpiredCreditCardRaisesAnException
 
 !classDefinition: #Cart category: #TusLibros!
 Object subclass: #Cart
-	instanceVariableNames: 'catalog items'
+	instanceVariableNames: 'catalog state'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
@@ -168,42 +172,52 @@ assertIsValidQuantity: aQuantity
 	aQuantity strictlyPositive ifFalse: [ self error: self invalidQuantityErrorMessage ]! !
 
 
-!Cart methodsFor: 'initialization' stamp: 'HernanWilkinson 6/17/2013 17:48'!
+!Cart methodsFor: 'initialization' stamp: 'J.S 6/8/2019 17:00:50'!
 initializeAcceptingItemsOf: aCatalog
 
 	catalog := aCatalog.
-	items := OrderedCollection new.! !
+	state := EmptyCartState new.! !
 
 
-!Cart methodsFor: 'queries' stamp: 'HernanWilkinson 6/17/2013 17:45'!
+!Cart methodsFor: 'queries' stamp: 'J.S 6/8/2019 17:06:03'!
 occurrencesOf: anItem
 
-	^items occurrencesOf: anItem  ! !
+	^state occurrencesOf: anItem  ! !
 
 
-!Cart methodsFor: 'testing' stamp: 'HernanWilkinson 6/17/2013 17:44'!
+!Cart methodsFor: 'testing' stamp: 'J.S 6/8/2019 17:03:01'!
 includes: anItem
 
-	^items includes: anItem ! !
+	^state includes: anItem ! !
 
-!Cart methodsFor: 'testing' stamp: 'HernanWilkinson 6/17/2013 17:44'!
+!Cart methodsFor: 'testing' stamp: 'J.S 6/8/2019 17:02:47'!
 isEmpty
 	
-	^items isEmpty ! !
+	^state isEmpty ! !
 
 
-!Cart methodsFor: 'adding' stamp: 'HernanWilkinson 6/17/2013 17:44'!
+!Cart methodsFor: 'adding' stamp: 'J.S 6/8/2019 17:10:01'!
 add: anItem
 
-	^ self add: 1 of: anItem ! !
+	self assertIsValidItem: anItem.
+	
+	^state add: anItem to: self.! !
 
-!Cart methodsFor: 'adding' stamp: 'HernanWilkinson 6/17/2013 17:51'!
+!Cart methodsFor: 'adding' stamp: 'J.S 6/8/2019 17:10:05'!
 add: aQuantity of: anItem
 
 	self assertIsValidQuantity: aQuantity.
-	self assertIsValidItem: anItem.
+	1 to: aQuantity do: [ :aNumber | self add: anItem ]! !
 
-	1 to: aQuantity do: [ :aNumber | items add: anItem ]! !
+
+!Cart methodsFor: 'accessing' stamp: 'J.S 6/8/2019 17:05:41'!
+state: aCartState 
+	state _ aCartState! !
+
+
+!Cart methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:45:46'!
+performCheckout
+	^state performCheckout! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -215,6 +229,113 @@ Cart class
 acceptingItemsOf: aCatalog
 
 	^self new initializeAcceptingItemsOf: aCatalog ! !
+
+
+!Cart class methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 18:07:29'!
+cannotCheckoutEmptyCartException
+	^'cannot etc'! !
+
+
+!classDefinition: #CartState category: #TusLibros!
+Object subclass: #CartState
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!CartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 16:59:35'!
+add: anItem to: aCart
+	^self subclassResponsibility ! !
+
+!CartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:03:43'!
+includes: anItem
+	^self subclassResponsibility ! !
+
+!CartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:02:30'!
+isEmpty
+	^self subclassResponsibility ! !
+
+!CartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:46:01'!
+performCheckout
+	^self subclassResponsibility ! !
+
+
+!CartState methodsFor: 'accessing' stamp: 'J.S 6/8/2019 17:07:13'!
+occurrencesOf: anItem 
+	^self subclassResponsibility ! !
+
+
+!classDefinition: #EmptyCartState category: #TusLibros!
+CartState subclass: #EmptyCartState
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!EmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 16:59:12'!
+add: anItem to: aCart
+	aCart state: (NotEmptyCartState with: (OrderedCollection with: anItem)).
+	
+	! !
+
+!EmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:03:34'!
+includes: anItem
+	^false! !
+
+!EmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:02:16'!
+isEmpty
+^true! !
+
+!EmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:07:31'!
+occurrencesOf: anItem
+	^0! !
+
+!EmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 18:07:01'!
+performCheckout
+	self error: Cart cannotCheckoutEmptyCartException ! !
+
+
+!classDefinition: #NotEmptyCartState category: #TusLibros!
+CartState subclass: #NotEmptyCartState
+	instanceVariableNames: 'items'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!NotEmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:00:27'!
+add: anItem to: aCart
+	items add: anItem.! !
+
+!NotEmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:03:25'!
+includes: anItem
+	^items includes: anItem! !
+
+!NotEmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:04:59'!
+initializeWith: aListOfItems
+	items := aListOfItems ! !
+
+!NotEmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:02:22'!
+isEmpty
+^false! !
+
+!NotEmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 18:07:09'!
+performCheckout
+! !
+
+
+!NotEmptyCartState methodsFor: 'accessing' stamp: 'J.S 6/8/2019 17:07:04'!
+occurrencesOf: anItem 
+	^items occurrencesOf: anItem! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'NotEmptyCartState class' category: #TusLibros!
+NotEmptyCartState class
+	instanceVariableNames: ''!
+
+!NotEmptyCartState class methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:04:43'!
+with: aListOfItems
+	^(self new initializeWith: aListOfItems)! !
 
 
 !classDefinition: #Cashier category: #TusLibros!
@@ -230,9 +351,10 @@ initializeFor: aCart with: aCreditCard
 	card := aCreditCard! !
 
 
-!Cashier methodsFor: 'cashing' stamp: 'J.S 6/8/2019 15:56:22'!
+!Cashier methodsFor: 'cashing' stamp: 'J.S 6/8/2019 18:09:16'!
 checkout
-	^self error: self class cannotCheckoutEmptyCartException ! !
+	cart performCheckout.
+	^self error: self class invalidCreditCardException ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -244,10 +366,6 @@ Cashier class
 for: aCart with: aCreditCard 
 	^self new initializeFor: aCart with: aCreditCard.! !
 
-
-!Cashier class methodsFor: 'Errors' stamp: 'J.S 6/8/2019 15:50:50'!
-cannotCheckoutEmptyCartException
-	^'cannot checkout an empty cart'! !
 
 !Cashier class methodsFor: 'Errors' stamp: 'J.S 6/8/2019 16:09:33'!
 invalidCreditCardException
