@@ -10,7 +10,7 @@ test01NewCartsAreCreatedEmpty
 
 	self assert: self createCart isEmpty! !
 
-!CartTest methodsFor: 'tests' stamp: 'HernanWilkinson 6/17/2013 17:45'!
+!CartTest methodsFor: 'tests' stamp: 'J.S 6/8/2019 19:22:45'!
 test02CanNotAddItemsThatDoNotBelongToStore
 
 	| cart |
@@ -18,10 +18,10 @@ test02CanNotAddItemsThatDoNotBelongToStore
 	cart := self createCart.
 	
 	self 
-		should: [ cart add: self itemNotSellByTheStore ]
+		should: [ cart add: self itemNotSoldByTheStore ]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [ :anError |
-			self assert: anError messageText = cart invalidItemErrorMessage.
+			self assert: anError messageText = Cart invalidItemErrorMessage.
 			self assert: cart isEmpty ]! !
 
 !CartTest methodsFor: 'tests' stamp: 'HernanWilkinson 6/17/2013 17:43'!
@@ -34,7 +34,7 @@ test03AfterAddingAnItemTheCartIsNotEmptyAnymore
 	cart add: self itemSellByTheStore.
 	self deny: cart isEmpty ! !
 
-!CartTest methodsFor: 'tests' stamp: 'HernanWilkinson 6/17/2013 17:43'!
+!CartTest methodsFor: 'tests' stamp: 'J.S 6/8/2019 19:22:54'!
 test04CanNotAddNonPositiveNumberOfItems
 
 	| cart |
@@ -45,21 +45,23 @@ test04CanNotAddNonPositiveNumberOfItems
 		should: [cart add: 0 of: self itemSellByTheStore ]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [ :anError |
-			self assert: anError messageText = cart invalidQuantityErrorMessage.
+			self assert: anError messageText = Cart invalidQuantityErrorMessage.
 			self assert: cart isEmpty ]! !
 
-!CartTest methodsFor: 'tests' stamp: 'HernanWilkinson 6/17/2013 17:45'!
-test05CanNotAddMoreThanOneItemNotSellByTheStore
+!CartTest methodsFor: 'tests' stamp: 'J.S 6/8/2019 19:23:00'!
+test05CanNotAddMoreThanOneItemNotSoldByTheStore
+
+	"ES NECESARIO ESTE????"
 
 	| cart |
 	
 	cart := self createCart.
 	
 	self 
-		should: [cart add: 2 of: self itemNotSellByTheStore  ]
+		should: [cart add: 2 of: self itemNotSoldByTheStore  ]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [ :anError |
-			self assert: anError messageText = cart invalidItemErrorMessage.
+			self assert: anError messageText = Cart invalidItemErrorMessage.
 			self assert: cart isEmpty ]! !
 
 !CartTest methodsFor: 'tests' stamp: 'HernanWilkinson 6/17/2013 17:43'!
@@ -102,8 +104,8 @@ defaultCatalog
 	
 	^ Array with: self itemSellByTheStore! !
 
-!CartTest methodsFor: 'support' stamp: 'HernanWilkinson 6/17/2013 17:44'!
-itemNotSellByTheStore
+!CartTest methodsFor: 'support' stamp: 'J.S 6/8/2019 19:06:48'!
+itemNotSoldByTheStore
 	
 	^'invalidBook'! !
 
@@ -150,33 +152,22 @@ Object subclass: #Cart
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!Cart methodsFor: 'error messages' stamp: 'HernanWilkinson 6/17/2013 17:45'!
-invalidItemErrorMessage
-	
-	^'Item is not in catalog'! !
-
-!Cart methodsFor: 'error messages' stamp: 'HernanWilkinson 6/17/2013 17:45'!
-invalidQuantityErrorMessage
-	
-	^'Invalid number of items'! !
-
-
-!Cart methodsFor: 'assertions' stamp: 'HernanWilkinson 6/17/2013 17:51'!
+!Cart methodsFor: 'assertions' stamp: 'J.S 6/8/2019 19:23:25'!
 assertIsValidItem: anItem
 
-	(catalog includes: anItem) ifFalse: [ self error: self invalidItemErrorMessage ]! !
+	(catalog includes: anItem) ifFalse: [ self error: Cart invalidItemErrorMessage ]! !
 
-!Cart methodsFor: 'assertions' stamp: 'HernanWilkinson 6/17/2013 17:51'!
+!Cart methodsFor: 'assertions' stamp: 'J.S 6/8/2019 19:23:39'!
 assertIsValidQuantity: aQuantity
 
-	aQuantity strictlyPositive ifFalse: [ self error: self invalidQuantityErrorMessage ]! !
+	aQuantity strictlyPositive ifFalse: [ self error: Cart invalidQuantityErrorMessage ]! !
 
 
-!Cart methodsFor: 'initialization' stamp: 'J.S 6/8/2019 17:00:50'!
+!Cart methodsFor: 'initialization' stamp: 'J.S 6/8/2019 19:20:25'!
 initializeAcceptingItemsOf: aCatalog
 
 	catalog := aCatalog.
-	state := EmptyCartState new.! !
+	state := CartEmpty new.! !
 
 
 !Cart methodsFor: 'queries' stamp: 'J.S 6/8/2019 17:06:03'!
@@ -210,12 +201,12 @@ add: aQuantity of: anItem
 	1 to: aQuantity do: [ :aNumber | self add: anItem ]! !
 
 
-!Cart methodsFor: 'accessing' stamp: 'J.S 6/8/2019 17:05:41'!
+!Cart methodsFor: 'setters' stamp: 'J.S 6/8/2019 17:05:41'!
 state: aCartState 
 	state _ aCartState! !
 
 
-!Cart methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:45:46'!
+!Cart methodsFor: 'checkout' stamp: 'J.S 6/8/2019 17:45:46'!
 performCheckout
 	^state performCheckout! !
 
@@ -231,9 +222,19 @@ acceptingItemsOf: aCatalog
 	^self new initializeAcceptingItemsOf: aCatalog ! !
 
 
-!Cart class methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 18:07:29'!
+!Cart class methodsFor: 'errors' stamp: 'J.S 6/8/2019 18:07:29'!
 cannotCheckoutEmptyCartException
 	^'cannot etc'! !
+
+!Cart class methodsFor: 'errors' stamp: 'J.S 6/8/2019 19:22:07'!
+invalidItemErrorMessage
+	
+	^'Item is not in catalog'! !
+
+!Cart class methodsFor: 'errors' stamp: 'J.S 6/8/2019 19:22:26'!
+invalidQuantityErrorMessage
+	
+	^'Invalid number of items'! !
 
 
 !classDefinition: #CartState category: #TusLibros!
@@ -265,75 +266,75 @@ occurrencesOf: anItem
 	^self subclassResponsibility ! !
 
 
-!classDefinition: #EmptyCartState category: #TusLibros!
-CartState subclass: #EmptyCartState
+!classDefinition: #CartEmpty category: #TusLibros!
+CartState subclass: #CartEmpty
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!EmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 16:59:12'!
+!CartEmpty methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 19:20:45'!
 add: anItem to: aCart
-	aCart state: (NotEmptyCartState with: (OrderedCollection with: anItem)).
+	aCart state: (CartNotEmpty with: (OrderedCollection with: anItem)).
 	
 	! !
 
-!EmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:03:34'!
+!CartEmpty methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:03:34'!
 includes: anItem
 	^false! !
 
-!EmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:02:16'!
+!CartEmpty methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:02:16'!
 isEmpty
 ^true! !
 
-!EmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:07:31'!
+!CartEmpty methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:07:31'!
 occurrencesOf: anItem
 	^0! !
 
-!EmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 18:07:01'!
+!CartEmpty methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 18:07:01'!
 performCheckout
 	self error: Cart cannotCheckoutEmptyCartException ! !
 
 
-!classDefinition: #NotEmptyCartState category: #TusLibros!
-CartState subclass: #NotEmptyCartState
+!classDefinition: #CartNotEmpty category: #TusLibros!
+CartState subclass: #CartNotEmpty
 	instanceVariableNames: 'items'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!NotEmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:00:27'!
+!CartNotEmpty methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:00:27'!
 add: anItem to: aCart
 	items add: anItem.! !
 
-!NotEmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:03:25'!
+!CartNotEmpty methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:03:25'!
 includes: anItem
 	^items includes: anItem! !
 
-!NotEmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:04:59'!
+!CartNotEmpty methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:04:59'!
 initializeWith: aListOfItems
 	items := aListOfItems ! !
 
-!NotEmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:02:22'!
+!CartNotEmpty methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:02:22'!
 isEmpty
 ^false! !
 
-!NotEmptyCartState methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 18:07:09'!
+!CartNotEmpty methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 18:07:09'!
 performCheckout
 ! !
 
 
-!NotEmptyCartState methodsFor: 'accessing' stamp: 'J.S 6/8/2019 17:07:04'!
+!CartNotEmpty methodsFor: 'accessing' stamp: 'J.S 6/8/2019 17:07:04'!
 occurrencesOf: anItem 
 	^items occurrencesOf: anItem! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'NotEmptyCartState class' category: #TusLibros!
-NotEmptyCartState class
+!classDefinition: 'CartNotEmpty class' category: #TusLibros!
+CartNotEmpty class
 	instanceVariableNames: ''!
 
-!NotEmptyCartState class methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:04:43'!
+!CartNotEmpty class methodsFor: 'as yet unclassified' stamp: 'J.S 6/8/2019 17:04:43'!
 with: aListOfItems
 	^(self new initializeWith: aListOfItems)! !
 
