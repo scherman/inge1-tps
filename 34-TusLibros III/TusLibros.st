@@ -1,70 +1,3 @@
-!classDefinition: #CartInterfaceTest category: #TusLibros!
-TestCase subclass: #CartInterfaceTest
-	instanceVariableNames: 'cartInterface invalidClient clients aPricelist validClient book'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'TusLibros'!
-
-!CartInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/16/2019 00:23:53'!
-test01CreatingCartWithInvalidClientRaisesException
-	
-	self should:
-		[cartInterface registerCartFor: invalidClient key with: invalidClient value]
-		raise: Error - MessageNotUnderstood 
-		withExceptionDo: [ :anError |
-			self assert: (anError messageText = CartInterface cannotCreateCartForInvalidClient).
-			self assert: (cartInterface cartsSessions isEmpty)
-		]! !
-
-!CartInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/16/2019 11:04:18'!
-test02ACartSessionWithAnEmptyCartIsCreatedForAValidClient
-	
-	| createdCart |
-	createdCart := cartInterface registerCartFor: validClient key with: validClient value.
-	self assert: (cartInterface cartsSessions includesKey: createdCart).
-	self assert: ((cartInterface cartsSessions at: createdCart ) cart isEmpty)! !
-
-!CartInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/16/2019 11:18:10'!
-test03CreatingCartWithInvalidPasswordRaisesException
-	
-	self should:
-		[cartInterface registerCartFor: validClient key with: invalidClient value]
-		raise: Error - MessageNotUnderstood 
-		withExceptionDo: [ :anError |
-			self assert: (anError messageText = CartInterface cannotCreateCartForInvalidClient).
-			self assert: (cartInterface cartsSessions isEmpty)
-		]! !
-
-!CartInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/16/2019 11:51:26'!
-test04CreatedCartCanBeListedAndIsEmpty
-	
-	| createdCart |
-	createdCart := cartInterface registerCartFor: validClient key with: validClient value.
-	self assert: ((cartInterface listCart: createdCart) isEmpty).! !
-
-!CartInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/16/2019 20:02:43'!
-test05AddingItemToCartAddsTheItem
-	
-	| createdCart expectedItems |
-	createdCart := cartInterface registerCartFor: validClient key with: validClient value.
-	cartInterface add: 2 of: book to: createdCart.
-	expectedItems := Dictionary new.
-	expectedItems add: book->2.
-	self assert: ((cartInterface listCart: createdCart) = expectedItems).! !
-
-
-!CartInterfaceTest methodsFor: 'setUp/tearDown' stamp: 'J.S 6/16/2019 19:34:18'!
-setUp
-	book := 'bookisbn'.
-	aPricelist := Dictionary new.
-	aPricelist add: book->5.
-	validClient := 'pepe'->'passwordpepe'.
-	clients := Dictionary new.
-	clients add: validClient.
-	invalidClient := 'pedro'->'passwordpedro'.
-	cartInterface := CartInterface for: clients with: aPricelist! !
-
-
 !classDefinition: #CartTest category: #TusLibros!
 TestCase subclass: #CartTest
 	instanceVariableNames: 'testObjectsFactory'
@@ -77,7 +10,7 @@ test01NewCartsAreCreatedEmpty
 
 	self assert: testObjectsFactory createCart isEmpty! !
 
-!CartTest methodsFor: 'tests' stamp: 'HernanWilkinson 6/17/2013 18:10'!
+!CartTest methodsFor: 'tests' stamp: 'J.S 6/23/2019 17:28:41'!
 test02CanNotAddItemsThatDoNotBelongToStore
 
 	| cart |
@@ -88,7 +21,7 @@ test02CanNotAddItemsThatDoNotBelongToStore
 		should: [ cart add: testObjectsFactory itemNotSellByTheStore ]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [ :anError |
-			self assert: anError messageText = cart invalidItemErrorMessage.
+			self assert: anError messageText = Cart invalidItemErrorMessage.
 			self assert: cart isEmpty ]! !
 
 !CartTest methodsFor: 'tests' stamp: 'HernanWilkinson 6/17/2013 18:10'!
@@ -101,7 +34,7 @@ test03AfterAddingAnItemTheCartIsNotEmptyAnymore
 	cart add: testObjectsFactory itemSellByTheStore.
 	self deny: cart isEmpty ! !
 
-!CartTest methodsFor: 'tests' stamp: 'HernanWilkinson 6/17/2013 18:10'!
+!CartTest methodsFor: 'tests' stamp: 'J.S 6/23/2019 17:28:33'!
 test04CanNotAddNonPositiveNumberOfItems
 
 	| cart |
@@ -112,10 +45,10 @@ test04CanNotAddNonPositiveNumberOfItems
 		should: [cart add: 0 of: testObjectsFactory itemSellByTheStore ]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [ :anError |
-			self assert: anError messageText = cart invalidQuantityErrorMessage.
+			self assert: anError messageText = Cart invalidQuantityErrorMessage.
 			self assert: cart isEmpty ]! !
 
-!CartTest methodsFor: 'tests' stamp: 'HernanWilkinson 6/17/2013 18:10'!
+!CartTest methodsFor: 'tests' stamp: 'J.S 6/23/2019 17:28:29'!
 test05CanNotAddMoreThanOneItemNotSellByTheStore
 
 	| cart |
@@ -126,7 +59,7 @@ test05CanNotAddMoreThanOneItemNotSellByTheStore
 		should: [cart add: 2 of: testObjectsFactory itemNotSellByTheStore  ]
 		raise: Error - MessageNotUnderstood
 		withExceptionDo: [ :anError |
-			self assert: anError messageText = cart invalidItemErrorMessage.
+			self assert: anError messageText = Cart invalidItemErrorMessage.
 			self assert: cart isEmpty ]! !
 
 !CartTest methodsFor: 'tests' stamp: 'HernanWilkinson 6/17/2013 18:11'!
@@ -313,6 +246,228 @@ debit: anAmount from: aCreditCard
 	^debitBehavior value: anAmount value: aCreditCard ! !
 
 
+!classDefinition: #InternalInterfaceTest category: #TusLibros!
+TestCase subclass: #InternalInterfaceTest
+	instanceVariableNames: 'cartInterface invalidClient clients aPricelist validClient book clock time creditCardNumber creditCardExpiringDate'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/23/2019 16:47:08'!
+test01CreatingCartWithInvalidClientRaisesException
+	
+	self should:
+		[cartInterface registerCartFor: invalidClient key with: invalidClient value]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: (anError messageText = InternalInterface cannotCreateCartForInvalidClientErrorMessage).
+			self assert: (cartInterface cartsSessions isEmpty)
+		]! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/16/2019 11:04:18'!
+test02ACartSessionWithAnEmptyCartIsCreatedForAValidClient
+	
+	| createdCart |
+	createdCart := cartInterface registerCartFor: validClient key with: validClient value.
+	self assert: (cartInterface cartsSessions includesKey: createdCart).
+	self assert: ((cartInterface cartsSessions at: createdCart ) cart isEmpty)! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/23/2019 16:47:08'!
+test03CreatingCartWithInvalidPasswordRaisesException
+	
+	self should:
+		[cartInterface registerCartFor: validClient key with: invalidClient value]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: (anError messageText = InternalInterface cannotCreateCartForInvalidClientErrorMessage).
+			self assert: (cartInterface cartsSessions isEmpty)
+		]! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/16/2019 11:51:26'!
+test04CreatedCartCanBeListedAndIsEmpty
+	
+	| createdCart |
+	createdCart := cartInterface registerCartFor: validClient key with: validClient value.
+	self assert: ((cartInterface listCart: createdCart) isEmpty).! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/19/2019 00:06:58'!
+test05AddingItemToCartAddsTheItem
+	
+	| createdCart expectedItems |
+	expectedItems := Dictionary new.
+	expectedItems add: book->2.
+	
+	createdCart := cartInterface registerCartFor: validClient key with: validClient value.
+	cartInterface add: 2 of: book to: createdCart.
+	
+	self assert: ((cartInterface listCart: createdCart) = expectedItems).! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/21/2019 23:55:00'!
+test06SessionExpiresAfter30MinutesOfInactivity
+	
+	| createdCartId |
+	createdCartId := cartInterface registerCartFor: validClient key with: validClient value.
+	self moveForward: 31.
+	
+	self assert: (cartInterface isSessionWithId: createdCartId expiredOn: self now)! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/23/2019 16:47:08'!
+test07CannotListCartIfSessionIsExpired
+	
+	| createdCartId |
+	createdCartId := cartInterface registerCartFor: validClient key with: validClient value.
+	self moveForward: 31.
+	self should:
+		[cartInterface listCart: createdCartId]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: (anError messageText = InternalInterface cartSessionExpiredErrorMessage).
+		]! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/23/2019 16:47:08'!
+test08CannotAddAnItemToCartIfSessionIsExpired
+	
+	| createdCartId |
+	createdCartId := cartInterface registerCartFor: validClient key with: validClient value.
+	self moveForward: 31.
+	self should:
+		[cartInterface add: 2 of: book to: createdCartId]
+		raise: Error - MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: (anError messageText = InternalInterface cartSessionExpiredErrorMessage).
+		]! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/21/2019 23:55:44'!
+test09AddingItemToCartRefreshesSessionExpirationDate
+	
+	| createdCartId |
+	createdCartId := cartInterface registerCartFor: validClient key with: validClient value.
+	self moveForward: 25.
+	cartInterface add: 2 of: book to: createdCartId.
+	self moveForward: 25.
+	
+	self deny: (cartInterface isSessionWithId: createdCartId expiredOn: self now).! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/21/2019 23:55:57'!
+test10ListingCartRefreshesSessionExpirationDate
+	
+	| createdCartId |
+	createdCartId := cartInterface registerCartFor: validClient key with: validClient value.
+	self moveForward: 25.
+	cartInterface listCart: createdCartId.
+	self moveForward: 25.
+	
+	self deny: (cartInterface isSessionWithId: createdCartId expiredOn: self now).! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/21/2019 23:57:31'!
+test11PurchaseIsListedAfterCheckout
+	
+	| createdCartId  |
+	createdCartId := cartInterface registerCartFor: validClient key with: validClient value.
+	cartInterface add: 2 of: book to: createdCartId.
+	cartInterface checkoutCartWithId: createdCartId 
+					withCreditCardNumber: creditCardNumber
+					withCreditCardExpiringDate: creditCardExpiringDate
+					withCreditCardOwner: validClient key.
+	self assert: (cartInterface listPurchasesFrom: validClient key) size = 1
+! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/22/2019 00:11:08'!
+test12CartSessionIsRemovedAfterCheckout
+	
+	| createdCartId  |
+	createdCartId := cartInterface registerCartFor: validClient key with: validClient value.
+	cartInterface add: 2 of: book to: createdCartId.
+	cartInterface checkoutCartWithId: createdCartId 
+					withCreditCardNumber: creditCardNumber
+					withCreditCardExpiringDate: creditCardExpiringDate
+					withCreditCardOwner: validClient key.
+					
+	self deny: (cartInterface cartsSessions keys includes: createdCartId)
+! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/23/2019 17:28:10'!
+test13CannotAddItemsNotSoldByTheStore
+	
+	| createdCartId  |
+	createdCartId := cartInterface registerCartFor: validClient key with: validClient value.
+
+	self 
+		should: [cartInterface add: 1 of: 'otrolibro' to: createdCartId ]
+		raise: Error - MessageNotUnderstood
+		withExceptionDo: [ :anError |
+		self assert: (cartInterface listCart: createdCartId) isEmpty.
+		self assert: (anError messageText = Cart invalidItemErrorMessage ) ].
+		
+! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/23/2019 17:27:18'!
+test14CannotNonPositiveAmountOfItems
+	
+	| createdCartId  |
+	createdCartId := cartInterface registerCartFor: validClient key with: validClient value.
+
+	self 
+		should: [cartInterface add: 0 of: book to: createdCartId ]
+		raise: Error - MessageNotUnderstood
+		withExceptionDo: [ :anError |
+		self assert: (cartInterface listCart: createdCartId) isEmpty.
+		self assert: (anError messageText = Cart invalidQuantityErrorMessage ) ].
+		
+! !
+
+!InternalInterfaceTest methodsFor: 'testing' stamp: 'J.S 6/23/2019 17:09:05'!
+test15CannotCheckoutWithExpiredCreditCard
+	
+	| createdCartId  expiredCreditCardDate today |
+	createdCartId := cartInterface registerCartFor: validClient key with: validClient value.
+	cartInterface add: 2 of: book to: createdCartId.
+	today := DateAndTime now.
+	expiredCreditCardDate := Month month: today monthIndex year: (today yearNumber - 1).
+	
+	self should: [cartInterface checkoutCartWithId: createdCartId 
+					withCreditCardNumber: creditCardNumber
+					withCreditCardExpiringDate: expiredCreditCardDate
+					withCreditCardOwner: validClient key.]
+	raise: Error - MessageNotUnderstood 
+	withExceptionDo: [:anError | 
+		self assert: (anError messageText = Cashier canNotChargeAnExpiredCreditCardErrorMessage )].
+					
+	self assert: (cartInterface cartsSessions keys includes: createdCartId)
+! !
+
+
+!InternalInterfaceTest methodsFor: 'setUp/tearDown' stamp: 'J.S 6/23/2019 16:47:08'!
+setUp
+	| today |
+	today := DateAndTime now.
+	book := 'bookisbn'.
+	aPricelist := Dictionary new.
+	aPricelist add: book->5.
+	validClient := 'pepe'->'passwordpepe'.
+	clients := Dictionary new.
+	clients add: validClient.
+	invalidClient := 'pedro'->'passwordpedro'.
+	creditCardNumber := 5555555555555555.
+	creditCardExpiringDate := Month month: today monthIndex year: (today yearNumber + 1).
+	time := DateAndTime now.
+	cartInterface := InternalInterface for: clients with: aPricelist with: self with: self.
+	! !
+
+
+!InternalInterfaceTest methodsFor: 'clock protocol' stamp: 'J.S 6/20/2019 16:03:24'!
+moveForward: anAmountOfMinutes
+	time := time + (Duration minutes: anAmountOfMinutes)! !
+
+!InternalInterfaceTest methodsFor: 'clock protocol' stamp: 'J.S 6/20/2019 14:42:37'!
+now
+	^time! !
+
+
+!InternalInterfaceTest methodsFor: 'merchant processor protocol' stamp: 'J.S 6/20/2019 19:04:57'!
+debit: anAmount from: aCreditCard! !
+
+
 !classDefinition: #Cart category: #TusLibros!
 Object subclass: #Cart
 	instanceVariableNames: 'catalog items'
@@ -320,26 +475,16 @@ Object subclass: #Cart
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!Cart methodsFor: 'error messages' stamp: 'HernanWilkinson 6/17/2013 17:45'!
-invalidItemErrorMessage
-	
-	^'Item is not in catalog'! !
 
-!Cart methodsFor: 'error messages' stamp: 'HernanWilkinson 6/17/2013 17:45'!
-invalidQuantityErrorMessage
-	
-	^'Invalid number of items'! !
-
-
-!Cart methodsFor: 'assertions' stamp: 'HernanWilkinson 6/17/2013 18:06'!
+!Cart methodsFor: 'assertions' stamp: 'J.S 6/23/2019 17:28:59'!
 assertIsValidItem: anItem
 
-	(catalog includesKey: anItem) ifFalse: [ self error: self invalidItemErrorMessage ]! !
+	(catalog includesKey: anItem) ifFalse: [ self error: self class invalidItemErrorMessage ]! !
 
-!Cart methodsFor: 'assertions' stamp: 'HernanWilkinson 6/17/2013 17:51'!
+!Cart methodsFor: 'assertions' stamp: 'J.S 6/23/2019 17:29:12'!
 assertIsValidQuantity: aQuantity
 
-	aQuantity strictlyPositive ifFalse: [ self error: self invalidQuantityErrorMessage ]! !
+	aQuantity strictlyPositive ifFalse: [ self error: self class invalidQuantityErrorMessage ]! !
 
 
 !Cart methodsFor: 'initialization' stamp: 'J.S 6/16/2019 11:36:40'!
@@ -401,87 +546,46 @@ acceptingItemsOf: aCatalog
 
 	^self new initializeAcceptingItemsOf: aCatalog ! !
 
-
-!classDefinition: #CartInterface category: #TusLibros!
-Object subclass: #CartInterface
-	instanceVariableNames: 'clients pricelist cartsSessions'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'TusLibros'!
 
-!CartInterface methodsFor: 'initialization' stamp: 'J.S 6/16/2019 00:10:42'!
-initializeFor: aClientsList with: aPricelist 
-	clients := aClientsList.
-	pricelist := aPricelist.
-	cartsSessions := Dictionary new.! !
-
-
-!CartInterface methodsFor: 'carts creation' stamp: 'J.S 6/16/2019 00:43:06'!
-registerCartFor: aClient with: aPassword 
-	| aCartSession |
-	self assertValid: aClient with: aPassword.
-	aCartSession := CartSession initializeFor: aClient with: pricelist.
-	cartsSessions add: (aCartSession identityHash) -> aCartSession.
-	^ aCartSession identityHash ! !
-
-
-!CartInterface methodsFor: 'private - assertions' stamp: 'J.S 6/16/2019 00:37:55'!
-assertValid: aClient with: aPassword
-	((clients includesKey: aClient ) and: [(clients at: aClient)  = aPassword]) ifFalse:
-		[ self error: CartInterface cannotCreateCartForInvalidClient]! !
-
-
-!CartInterface methodsFor: 'private - carts management' stamp: 'J.S 6/16/2019 00:09:00'!
-cartsSessions
-	^ cartsSessions! !
-
-
-!CartInterface methodsFor: 'carts management' stamp: 'J.S 6/16/2019 19:27:33'!
-add: anAmount of: aBook to: aCartId 
-	| cart |
-	cart := cartsSessions at: aCartId.
-	cart add: anAmount of: aBook
+!Cart class methodsFor: 'errors' stamp: 'J.S 6/23/2019 17:26:26'!
+invalidItemErrorMessage
 	
-	! !
+	^'Item is not in catalog'! !
 
-!CartInterface methodsFor: 'carts management' stamp: 'J.S 6/16/2019 11:52:01'!
-listCart: aCartId 
-	^(cartsSessions at: aCartId) itemsList.! !
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'CartInterface class' category: #TusLibros!
-CartInterface class
-	instanceVariableNames: ''!
-
-!CartInterface class methodsFor: 'instance creation' stamp: 'J.S 6/15/2019 21:55:30'!
-for: aClientsList with: aPricelist 
-	^(self new initializeFor: aClientsList with: aPricelist)! !
-
-
-!CartInterface class methodsFor: 'errors' stamp: 'J.S 6/15/2019 22:33:31'!
-cannotCreateCartForInvalidClient
-	^'cannot create cart for invalid client'! !
+!Cart class methodsFor: 'errors' stamp: 'J.S 6/23/2019 17:26:36'!
+invalidQuantityErrorMessage
+	
+	^'Invalid number of items'! !
 
 
 !classDefinition: #CartSession category: #TusLibros!
 Object subclass: #CartSession
-	instanceVariableNames: 'id cart client'
+	instanceVariableNames: 'cart client lastOperationDate'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
 
-!CartSession methodsFor: 'initialization' stamp: 'J.S 6/16/2019 00:40:00'!
-initializeFor: aClient with: aPricelist
+!CartSession methodsFor: 'initialization' stamp: 'J.S 6/21/2019 23:57:54'!
+initializeFor: aClient with: aPricelist at: aCreationDateTime 
 	client := aClient.
-	cart := Cart acceptingItemsOf: aPricelist! !
+	cart := Cart acceptingItemsOf: aPricelist.
+	lastOperationDate := aCreationDateTime ! !
 
 
-!CartSession methodsFor: 'getters' stamp: 'J.S 6/16/2019 11:04:46'!
+!CartSession methodsFor: 'getters and setters' stamp: 'J.S 6/16/2019 11:04:46'!
 cart
 	
 	^cart! !
 
+!CartSession methodsFor: 'getters and setters' stamp: 'J.S 6/21/2019 23:57:54'!
+lastOperationDate: aDate
+
+	lastOperationDate  := aDate.! !
+
+
+!CartSession methodsFor: 'cart management' stamp: 'J.S 6/21/2019 23:57:54'!
+isExpiredOn: aDateAndTime
+	^(lastOperationDate < (aDateAndTime - (Duration minutes: 30)))! !
 
 !CartSession methodsFor: 'cart management' stamp: 'J.S 6/16/2019 11:50:34'!
 itemsList
@@ -498,9 +602,9 @@ add: anAmount of: aBook
 CartSession class
 	instanceVariableNames: ''!
 
-!CartSession class methodsFor: 'instance creation' stamp: 'J.S 6/16/2019 00:39:45'!
-initializeFor: aClient with: aPricelist
-	^(self new initializeFor: aClient with: aPricelist).! !
+!CartSession class methodsFor: 'instance creation' stamp: 'J.S 6/19/2019 00:18:37'!
+initializeFor: aClient with: aPricelist at: aCreationDateTime 
+	^(self new initializeFor: aClient with: aPricelist at:  aCreationDateTime).! !
 
 
 !classDefinition: #Cashier category: #TusLibros!
@@ -596,7 +700,7 @@ creditCardHasNoCreditErrorMessage
 
 !classDefinition: #CreditCard category: #TusLibros!
 Object subclass: #CreditCard
-	instanceVariableNames: 'expiration'
+	instanceVariableNames: 'expiration owner number'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'TusLibros'!
@@ -607,10 +711,12 @@ isExpiredOn: aDate
 	^expiration start < (Month month: aDate monthIndex year: aDate yearNumber) start ! !
 
 
-!CreditCard methodsFor: 'initialization' stamp: 'HernanWilkinson 6/17/2013 18:38'!
-initializeExpiringOn: aMonth 
+!CreditCard methodsFor: 'initialization' stamp: 'J.S 6/20/2019 19:38:53'!
+initializeExpiringOn: aMonth with: aCardNumber from: anOwner
 	
-	expiration := aMonth ! !
+	expiration := aMonth .
+	number := aCardNumber.
+	owner := anOwner! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -618,10 +724,137 @@ initializeExpiringOn: aMonth
 CreditCard class
 	instanceVariableNames: ''!
 
-!CreditCard class methodsFor: 'instance creation' stamp: 'HernanWilkinson 6/17/2013 18:38'!
-expiringOn: aMonth 
+!CreditCard class methodsFor: 'instance creation' stamp: 'J.S 6/20/2019 19:39:13'!
+expiringOn: aMonth with: aCardNumber from: anOwner
 	
-	^self new initializeExpiringOn: aMonth! !
+	^self new initializeExpiringOn: aMonth with: aCardNumber from: anOwner! !
+
+
+!classDefinition: #InternalInterface category: #TusLibros!
+Object subclass: #InternalInterface
+	instanceVariableNames: 'clients pricelist cartsSessions clock merchantProcessor salesBook'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!InternalInterface methodsFor: 'initialization' stamp: 'J.S 6/20/2019 21:44:02'!
+initializeFor: aClientsList with: aPricelist  with: aClock with: aMerchantProcessor 
+	clients := aClientsList.
+	pricelist := aPricelist.
+	clock := aClock.
+	cartsSessions := Dictionary new.
+	merchantProcessor := aMerchantProcessor .
+	salesBook := Dictionary new.! !
+
+
+!InternalInterface methodsFor: 'carts creation' stamp: 'J.S 6/19/2019 23:03:21'!
+registerCartFor: aClient with: aPassword 
+	| aCartSession |
+	self assertValid: aClient with: aPassword.
+	aCartSession := CartSession initializeFor: aClient with: pricelist at: clock now.
+	cartsSessions add: (aCartSession identityHash) -> aCartSession.
+	^ aCartSession identityHash ! !
+
+
+!InternalInterface methodsFor: 'private - assertions' stamp: 'J.S 6/23/2019 16:47:08'!
+assertValid: aClient with: aPassword
+	((clients includesKey: aClient ) and: [(clients at: aClient)  = aPassword]) ifFalse:
+		[ self error: InternalInterface cannotCreateCartForInvalidClientErrorMessage]! !
+
+
+!InternalInterface methodsFor: 'private - carts management' stamp: 'J.S 6/21/2019 23:53:12'!
+assertNotExpired: aCartSessionId
+
+	(self isSessionWithId: aCartSessionId expiredOn: clock now)
+	ifTrue: [
+		cartsSessions removeKey: aCartSessionId.
+		^self error: (self class cartSessionExpiredErrorMessage )
+	] ! !
+
+!InternalInterface methodsFor: 'private - carts management' stamp: 'J.S 6/16/2019 00:09:00'!
+cartsSessions
+	^ cartsSessions! !
+
+!InternalInterface methodsFor: 'private - carts management' stamp: 'J.S 6/21/2019 23:49:12'!
+refreshSessionWithId: aSessionId
+
+	(cartsSessions at: aSessionId) lastOperationDate: clock now. ! !
+
+
+!InternalInterface methodsFor: 'carts management' stamp: 'J.S 6/21/2019 23:49:54'!
+add: anAmount of: aBook to: aCartId 
+	| cart |
+	self assertNotExpired: aCartId.
+	self refreshSessionWithId: aCartId.
+		
+	cart := cartsSessions at: aCartId.
+	cart add: anAmount of: aBook
+
+	! !
+
+!InternalInterface methodsFor: 'carts management' stamp: 'J.S 6/21/2019 23:50:05'!
+listCart: aCartId 
+	self assertNotExpired: aCartId.
+	self refreshSessionWithId: aCartId.
+	
+	^(cartsSessions at: aCartId) itemsList.! !
+
+
+!InternalInterface methodsFor: 'purchases' stamp: 'J.S 6/22/2019 00:19:42'!
+checkoutCartWithId: aCartId withCreditCardNumber: creditCardNumber withCreditCardExpiringDate: anExpirationDate withCreditCardOwner: aClientName 
+	| card cart cashier salesBookForClient |
+	self assertNotExpired: aCartId.
+	card := CreditCard expiringOn: anExpirationDate with:  creditCardNumber from: aClientName.
+	cart := (cartsSessions at: aCartId) cart.
+	salesBookForClient := self salesBookForClient: aClientName.
+	
+	
+	cashier := Cashier toCheckout: cart charging: card throught:  merchantProcessor on: (clock now date) registeringOn: salesBookForClient.
+	cashier checkOut.
+	
+	cartsSessions removeKey: aCartId.! !
+
+!InternalInterface methodsFor: 'purchases' stamp: 'J.S 6/20/2019 23:16:50'!
+listPurchasesFrom: aClient 
+	^self salesBookForClient: aClient.! !
+
+
+!InternalInterface methodsFor: 'private - getter' stamp: 'J.S 6/20/2019 23:09:14'!
+salesBookForClient: aClientName 
+	^salesBook at: aClientName ifAbsentPut: [
+			OrderedCollection new
+		]! !
+
+
+!InternalInterface methodsFor: 'testing' stamp: 'J.S 6/21/2019 23:36:07'!
+isSessionWithId: aSessionId expiredOn: aDate
+
+	| aCartSession |
+	aCartSession := cartsSessions at: aSessionId ifAbsent:[self error: self class inexistentCartError].
+	^ aCartSession isExpiredOn: aDate! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'InternalInterface class' category: #TusLibros!
+InternalInterface class
+	instanceVariableNames: ''!
+
+!InternalInterface class methodsFor: 'instance creation' stamp: 'J.S 6/20/2019 19:03:21'!
+for: aClientsList with: aPricelist with: aClock with: aMerchantProcessor 
+	^(self new initializeFor: aClientsList with: aPricelist with: aClock with: aMerchantProcessor)! !
+
+
+!InternalInterface class methodsFor: 'errors' stamp: 'J.S 6/21/2019 23:53:45'!
+cannotCreateCartForInvalidClientErrorMessage
+	^'cannot create cart for invalid client'! !
+
+!InternalInterface class methodsFor: 'errors' stamp: 'J.S 6/21/2019 23:53:12'!
+cartSessionExpiredErrorMessage
+	^'cart is expired after 30 minutes'! !
+
+!InternalInterface class methodsFor: 'errors' stamp: 'J.S 6/20/2019 17:15:56'!
+inexistentCartError
+	^'cart id does not exist'! !
 
 
 !classDefinition: #Sale category: #TusLibros!
@@ -691,15 +924,15 @@ defaultCatalog
 		yourself ! !
 
 
-!StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'HernanWilkinson 6/17/2013 18:37'!
+!StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'J.S 6/20/2019 19:39:41'!
 expiredCreditCard
 	
-	^CreditCard expiringOn: (Month month: today monthIndex year: today yearNumber - 1)! !
+	^CreditCard expiringOn: (Month month: today monthIndex year: today yearNumber - 1) with: 555 from: 'pepe'! !
 
-!StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'HernanWilkinson 6/17/2013 18:36'!
+!StoreTestObjectsFactory methodsFor: 'credit card' stamp: 'J.S 6/20/2019 19:39:50'!
 notExpiredCreditCard
 	
-	^CreditCard expiringOn: (Month month: today monthIndex year: today yearNumber + 1)! !
+	^CreditCard expiringOn: (Month month: today monthIndex year: today yearNumber + 1) with: 555 from: 'pepe'! !
 
 
 !StoreTestObjectsFactory methodsFor: 'initialization' stamp: 'HernanWilkinson 6/17/2013 18:37'!
